@@ -570,16 +570,7 @@
 
   #recaptcha-container{position:fixed;bottom:-200px;left:-200px;opacity:0;}
 
-  /* ===== TWILIO STATUS BANNER ===== */
-  .twilio-notice{
-    font-size:12px;color:var(--text-faint);
-    margin-top:12px;text-align:center;line-height:1.5;
-  }
-  .twilio-notice code{
-    background:var(--bg-elevated);border:1px solid var(--border);
-    padding:1px 5px;border-radius:4px;font-size:11px;
-    color:var(--accent);
-  }
+
 
   /* ===== RESPONSIVE ===== */
   @media (max-width:840px){
@@ -677,7 +668,7 @@
           <span class="label">Enviar código SMS</span>
           <span class="spinner"></span>
         </button>
-        <p class="twilio-notice">SMS enviado via <strong>Twilio</strong> desde tu servidor Railway.<br>Configura <code>TWILIO_ACCOUNT_SID</code>, <code>TWILIO_AUTH_TOKEN</code> y <code>TWILIO_PHONE</code> en Railway.</p>
+
       </div>
     </div>
   </div>
@@ -833,19 +824,7 @@ import {
   getDatabase, ref, set, get, update, push, onValue, off, serverTimestamp, onDisconnect
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-/* ============================================================
-   🔧 CONFIGURACIÓN
-   ============================================================
-   1. Firebase: pega tu config abajo (Realtime Database).
-   2. RAILWAY_URL: URL de tu servidor Railway con Twilio.
-      El servidor Railway debe tener 3 endpoints:
-        POST /send-otp   body: { phone: "+521234567890" }
-        POST /verify-otp body: { phone: "...", code: "123456" }
-        POST /firebase-token body: { phone: "..." } → { token }
-      Ver README al final de este archivo para el server Node.js.
-   ============================================================ */
-
-const RAILWAY_URL = 'https://TU-PROYECTO.up.railway.app'; // ← CAMBIA ESTO
+const RAILWAY_URL = 'https://TU-PROYECTO.up.railway.app';
 
 const firebaseConfig = {
   apiKey: "AIzaSyC9v2qp6zGtmvsFiOknlmTHnN6zZY1RLcI",
@@ -1408,15 +1387,44 @@ document.getElementById('logoutBtn').addEventListener('click', async ()=>{
 /* ============================================================
    ARRANQUE
    ============================================================ */
-onAuthStateChanged(auth, user=>{
-  setTimeout(async ()=>{
-    if(user){
-      currentUser=user;
+
+// Timeout de rescate: si Firebase tarda más de 5s en responder,
+// mostramos la pantalla de país para que el usuario no quede atascado.
+let authResolved = false;
+const rescueTimer = setTimeout(()=>{
+  if(!authResolved){
+    authResolved = true;
+    showScreen('country');
+  }
+}, 5000);
+
+onAuthStateChanged(auth, async user=>{
+  if(authResolved) return; // ya resolvimos (rescue o primer fire)
+  authResolved = true;
+  clearTimeout(rescueTimer);
+
+  // Pequeña pausa para que el splash se vea al menos un momento
+  await new Promise(r=>setTimeout(r,700));
+
+  if(user){
+    currentUser = user;
+    try{
       await routeAfterAuth();
-    }else{
+    }catch(err){
+      console.error('routeAfterAuth error:',err);
       showScreen('country');
     }
-  },750);
+  }else{
+    showScreen('country');
+  }
+}, err=>{
+  // onAuthStateChanged también puede recibir un error como segundo argumento
+  console.error('Firebase Auth error:',err);
+  if(!authResolved){
+    authResolved = true;
+    clearTimeout(rescueTimer);
+    showScreen('country');
+  }
 });
 </script>
 
