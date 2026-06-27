@@ -304,6 +304,101 @@
   @keyframes slideInRight{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
   @keyframes captchaShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
   @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}}
+
+  /* ═══════════════════════════
+     BOTTOM NAV (MÓVIL)
+  ═══════════════════════════ */
+  .bottom-nav{
+    display:none;
+    position:fixed;bottom:0;left:0;right:0;
+    background:var(--bg-sidebar);
+    border-top:1px solid var(--border);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+    z-index:50;
+  }
+  .bottom-nav-inner{
+    display:flex;align-items:center;justify-content:space-around;
+    max-width:500px;margin:0 auto;
+  }
+  .bn-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:6px 4px;border:none;background:none;cursor:pointer;
+    color:var(--text-soft);font-size:10px;font-weight:500;
+    border-radius:var(--radius-s);transition:color .15s,background .15s;
+  }
+  .bn-item svg{width:20px;height:20px;}
+  .bn-item.active{color:var(--accent);}
+  .bn-item:active{background:var(--bg-elevated);}
+  .bn-compose{
+    flex:0 0 auto;width:48px;height:48px;border-radius:50%;
+    background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;
+    margin:-18px 8px 0;box-shadow:0 4px 14px rgba(204,120,92,.4);
+    border:none;cursor:pointer;transition:transform .15s;
+  }
+  .bn-compose:active{transform:scale(.92);}
+  .bn-compose svg{width:20px;height:20px;}
+  @media(max-width:660px){
+    .bottom-nav{display:block;}
+    .mail-list-panel{padding-bottom:64px;}
+    .mail-read-panel{padding-bottom:64px;}
+    .compose-panel{padding-bottom:64px;}
+  }
+
+  /* ═══════════════════════════
+     CORREO EXTERNO / FORM PÚBLICO
+  ═══════════════════════════ */
+  .external-badge{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(91,138,114,.15);color:#5B8A72;
+    font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;
+    border:1px solid rgba(91,138,114,.3);
+  }
+  .public-wrap{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto;
+  }
+  .public-card{
+    width:100%;max-width:440px;background:var(--bg-card);
+    border:1px solid var(--border);border-radius:var(--radius-l);
+    padding:28px 24px;box-shadow:var(--shadow-m);
+  }
+  .public-card .brand-logo{margin-bottom:20px;}
+  .public-to-info{
+    background:var(--accent-soft);border:1px solid var(--accent);
+    border-radius:var(--radius-m);padding:12px 14px;margin-bottom:20px;
+    font-size:13px;color:var(--accent);font-weight:500;text-align:center;
+  }
+  .public-to-info b{font-weight:700;}
+  .public-success{
+    text-align:center;padding:30px 10px;
+  }
+  .public-success .check-icon{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--success);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;font-size:28px;
+  }
+  .public-success h2{font-size:20px;font-weight:700;margin-bottom:8px;}
+  .public-success p{font-size:14px;color:var(--text-soft);line-height:1.6;}
+  .share-link-box{
+    background:var(--bg-elevated);border:1px solid var(--border);
+    border-radius:var(--radius-m);padding:12px 14px;margin-top:10px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .share-link-text{
+    flex:1;font-size:12px;color:var(--text-soft);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    font-family:monospace;
+  }
+  .share-copy-btn{
+    flex-shrink:0;padding:6px 12px;border:none;border-radius:var(--radius-s);
+    background:var(--accent);color:#fff;font-size:11px;font-weight:600;cursor:pointer;
+  }
+  .share-copy-btn:active{opacity:.8;}
+  .external-hint{
+    font-size:11.5px;color:var(--text-faint);margin-top:6px;line-height:1.5;
+  }
+  .external-hint a{color:var(--accent);text-decoration:none;}
 </style>
 </head>
 <body>
@@ -420,6 +515,10 @@
               <button class="menu-item" id="notifPermBtn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
                 Activar notificaciones
+              </button>
+              <button class="menu-item" id="shareLinkBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                Mi enlace público
               </button>
               <button class="menu-item danger" id="logoutBtn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
@@ -572,7 +671,83 @@
       </div><!-- /read-panel -->
 
     </div><!-- /mail-layout -->
+
+    <!-- BOTTOM NAV (MÓVIL) -->
+    <nav class="bottom-nav" id="bottomNav">
+      <div class="bottom-nav-inner">
+        <button class="bn-item active" data-folder="inbox" id="bnInbox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+          <span>Bandeja</span>
+        </button>
+        <button class="bn-item" data-folder="starred" id="bnStarred">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Destacados</span>
+        </button>
+        <button class="bn-compose" id="bnCompose" title="Redactar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="bn-item" data-folder="sent" id="bnSent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span>Enviados</span>
+        </button>
+        <button class="bn-item" id="bnShare">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span>Recibir</span>
+        </button>
+      </div>
+    </nav>
+
   </div><!-- /screen-mail -->
+
+  <!-- ══════════ FORM PÚBLICO (correo externo) ══════════ -->
+  <div class="screen" id="screen-public">
+    <div class="public-wrap">
+      <div class="public-card" id="publicFormCard">
+        <div class="brand-logo">
+          <div class="brand-icon">B</div>
+          <div>
+            <div class="brand-name">Baro Mail</div>
+            <div class="brand-tag">Enviar correo externo</div>
+          </div>
+        </div>
+        <div class="public-to-info" id="publicToInfo">
+          Enviando a: <b id="publicToEmail">—</b>
+        </div>
+        <p class="eyebrow">Tu información</p>
+        <div class="field-row">
+          <label class="field-label" for="pubFromName">Tu nombre</label>
+          <input class="text-input" id="pubFromName" type="text" placeholder="¿Cómo te llamas?" maxlength="40" autocomplete="off" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="pubFromEmail">Tu correo electrónico</label>
+          <input class="text-input" id="pubFromEmail" type="email" placeholder="tu@email.com" autocomplete="off" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="pubSubject">Asunto</label>
+          <input class="text-input" id="pubSubject" type="text" placeholder="Asunto del mensaje" maxlength="100" autocomplete="off" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="pubBody">Mensaje</label>
+          <textarea class="compose-body" id="pubBody" placeholder="Escribe tu mensaje aquí..." style="min-height:140px;"></textarea>
+        </div>
+        <button class="btn-primary" id="pubSendBtn">
+          <span class="label">Enviar correo</span>
+          <span class="spinner"></span>
+        </button>
+        <p class="external-hint">
+          Este mensaje será entregado a la bandeja de entrada de Baro Mail. El destinatario podrá responderte a tu correo.
+        </p>
+      </div>
+      <div class="public-card public-success" id="publicSuccess" style="display:none;">
+        <div class="check-icon">✓</div>
+        <h2>¡Correo enviado!</h2>
+        <p>Tu mensaje ha sido entregado exitosamente a la bandeja de entrada de <b id="successEmail">—</b>.</p>
+        <button class="btn-primary" id="pubNewBtn" style="margin-top:20px;">
+          <span class="label">Enviar otro correo</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
 </div><!-- #app -->
 
@@ -615,7 +790,7 @@ let captchaAnswer     = 0;
 let notifPermission   = 'default';
 
 /* ═══════════ UTILS ═══════════ */
-const SCREEN_ORDER = ['register','mail'];
+const SCREEN_ORDER = ['register','mail','public'];
 function showScreen(id){
   SCREEN_ORDER.forEach(name=>{
     const el = document.getElementById('screen-'+name);
@@ -793,6 +968,10 @@ document.getElementById('notifPermBtn').addEventListener('click',()=>{
     notifPermission=p;
     showToast(p==='granted'?'✅ Notificaciones activadas.':'Notificaciones desactivadas.',p==='granted'?'success':'error');
   });
+});
+document.getElementById('shareLinkBtn').addEventListener('click',()=>{
+  menuPop.classList.remove('show');
+  showShareLink();
 });
 
 function showNotification(fromName, subject, mailId){
@@ -1019,17 +1198,50 @@ document.getElementById('sendMailBtn').addEventListener('click',async()=>{
   if(!subject){showToast('El asunto no puede estar vacío.');return;}
   if(!body){showToast('Escribe el cuerpo del mensaje.');return;}
 
+  // Si es un correo externo (no es @baro.com)
+  if(!to.endsWith('@'+BARO_DOMAIN)){
+    if(confirm(`📧 "${to}" es un correo externo.\n\nSe abrirá tu aplicación de correo predeterminada para enviar el mensaje. También se guardará una copia en tu carpeta de Enviados.\n\n¿Deseas continuar?`)){
+      // Guardar copia en enviados
+      try{
+        await push(ref(db,'baro_mails'),{
+          from:currentUserData.baroEmail,
+          fromName:currentUserData.name,
+          fromColor:currentUserData.avatarColor,
+          to:to,
+          toName:to,
+          toColor:'#5B8A72',
+          subject:subject,
+          body:body,
+          timestamp:Date.now(),
+          read:true,
+          starred:false,
+          external:true
+        });
+      }catch(e){console.warn('No se pudo guardar copia:',e);}
+      
+      // Abrir mailto
+      const subjectEnc=encodeURIComponent(subject);
+      const bodyEnc=encodeURIComponent(body);
+      window.location.href='mailto:'+to+'?subject='+subjectEnc+'&body='+bodyEnc;
+      
+      hideComposeView();
+      document.getElementById('screen-mail').classList.remove('mail-open');
+      loadFolder('sent');
+      showToast('Copia guardada en Enviados.','success');
+    }
+    return;
+  }
+
+  // Correo interno de Baro
   const btn=document.getElementById('sendMailBtn');
   setBtnLoading(btn,true);
   try{
     let toName=to,toColor='#CC785C';
-    if(to.endsWith('@'+BARO_DOMAIN)){
-      const uname=to.replace('@'+BARO_DOMAIN,'');
-      const uidSnap=await get(ref(db,'baro_usernames/'+uname));
-      if(!uidSnap.exists()){showToast(`No existe el usuario ${to} en Baro.`);return;}
-      const toUser=(await get(ref(db,'baro_users/'+uidSnap.val()))).val();
-      if(toUser){toName=toUser.name||to;toColor=toUser.avatarColor||'#CC785C';}
-    }
+    const uname=to.replace('@'+BARO_DOMAIN,'');
+    const uidSnap=await get(ref(db,'baro_usernames/'+uname));
+    if(!uidSnap.exists()){showToast(`No existe el usuario ${to} en Baro.`);return;}
+    const toUser=(await get(ref(db,'baro_users/'+uidSnap.val()))).val();
+    if(toUser){toName=toUser.name||to;toColor=toUser.avatarColor||'#CC785C';}
     await push(ref(db,'baro_mails'),{
       from:currentUserData.baroEmail,
       fromName:currentUserData.name,
@@ -1102,7 +1314,243 @@ document.getElementById('logoutBtn').addEventListener('click',async()=>{
   showScreen('register');
 });
 
+/* ═══════════ BOTTOM NAV (MÓVIL) ═══════════ */
+['bnInbox','bnStarred','bnSent'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',()=>{
+    const folder=document.getElementById(id).dataset.folder;
+    document.querySelectorAll('.bn-item').forEach(el=>el.classList.toggle('active',el.id===id));
+    loadFolder(folder);
+    document.getElementById('screen-mail').classList.remove('mail-open');
+  });
+});
+document.getElementById('bnCompose').addEventListener('click',()=>{
+  document.getElementById('screen-mail').classList.add('mail-open');
+  hideReadView();showComposeView();
+});
+document.getElementById('bnShare').addEventListener('click',()=>{
+  showShareLink();
+});
+
+function updateBottomNavActive(folder){
+  document.querySelectorAll('.bn-item').forEach(el=>{
+    el.classList.toggle('active',el.dataset.folder===folder);
+  });
+}
+
+// Sincronizar bottom nav con sidebar nav
+const _origLoadFolder=loadFolder;
+loadFolder=function(folder){
+  _origLoadFolder(folder);
+  updateBottomNavActive(folder);
+};
+
+/* ═══════════ COMPARTIR ENLACE PÚBLICO ═══════════ */
+function showShareLink(){
+  if(!currentUserData) return;
+  const link=window.location.origin+window.location.pathname+'?user='+currentUserData.username;
+  const msg=`📬 Tu enlace público para recibir correos:\n\n${link}\n\nComparte este enlace con cualquiera. Las personas podrán enviarte correos desde cualquier plataforma y te llegarán directamente a tu bandeja de entrada de Baro.`;
+  
+  // Intentar copiar al portapapeles
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(link).then(()=>{
+      showToast('🔗 Enlace copiado al portapapeles.','success');
+    }).catch(()=>{});
+  }
+  
+  // Mostrar en un toast largo o alerta
+  setTimeout(()=>{
+    alert('📬 Tu enlace público para recibir correos:\n\n'+link+'\n\nComparte este enlace con cualquiera. Las personas podrán enviarte correos desde cualquier plataforma y te llegarán directamente a tu bandeja de entrada.');
+  },100);
+}
+
+/* ═══════════ FORM PÚBLICO (correo externo) ═══════════ */
+function getUrlParam(name){
+  const params=new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+function initPublicForm(){
+  const username=getUrlParam('user');
+  if(!username) return false;
+  
+  const baroEmail=username+'@'+BARO_DOMAIN;
+  document.getElementById('publicToEmail').textContent=baroEmail;
+  showScreen('public');
+  document.title='Enviar correo a '+baroEmail+' · Baro Mail';
+  
+  // Verificar que el usuario exista
+  get(ref(db,'baro_usernames/'+username)).then(snap=>{
+    if(!snap.exists()){
+      document.getElementById('publicToInfo').innerHTML='<span style="color:var(--danger)">Usuario no encontrado</span>';
+      document.getElementById('pubSendBtn').disabled=true;
+    }
+  }).catch(()=>{});
+  
+  return true;
+}
+
+document.getElementById('pubSendBtn').addEventListener('click',async()=>{
+  const username=getUrlParam('user');
+  if(!username){showToast('Usuario no especificado.');return;}
+  
+  const fromName=document.getElementById('pubFromName').value.trim();
+  const fromEmail=document.getElementById('pubFromEmail').value.trim().toLowerCase();
+  const subject=document.getElementById('pubSubject').value.trim();
+  const body=document.getElementById('pubBody').value.trim();
+  
+  if(!fromName){showToast('Escribe tu nombre.');return;}
+  if(!isValidEmail(fromEmail)){showToast('Ingresa un correo electrónico válido.');return;}
+  if(!subject){showToast('El asunto no puede estar vacío.');return;}
+  if(!body){showToast('Escribe el cuerpo del mensaje.');return;}
+  
+  const btn=document.getElementById('pubSendBtn');
+  setBtnLoading(btn,true);
+  
+  try{
+    const baroEmail=username+'@'+BARO_DOMAIN;
+    await push(ref(db,'baro_mails'),{
+      from:fromEmail,
+      fromName:fromName,
+      fromColor:'#5B8A72',
+      to:baroEmail,
+      toName:baroEmail,
+      toColor:'#CC785C',
+      subject:subject,
+      body:body,
+      timestamp:Date.now(),
+      read:false,
+      starred:false,
+      external:true
+    });
+    
+    // Mostrar éxito
+    document.getElementById('publicFormCard').style.display='none';
+    document.getElementById('publicSuccess').style.display='block';
+    document.getElementById('successEmail').textContent=baroEmail;
+    
+  }catch(err){
+    console.error(err);
+    showToast('No se pudo enviar el correo. Intenta de nuevo.');
+  }finally{
+    setBtnLoading(btn,false);
+  }
+});
+
+document.getElementById('pubNewBtn').addEventListener('click',()=>{
+  document.getElementById('pubFromName').value='';
+  document.getElementById('pubFromEmail').value='';
+  document.getElementById('pubSubject').value='';
+  document.getElementById('pubBody').value='';
+  document.getElementById('publicFormCard').style.display='';
+  document.getElementById('publicSuccess').style.display='none';
+});
+
+/* ═══════════ INDICADOR DE CORREO EXTERNO ═══════════ */
+// Modificar renderMailList para mostrar badge de correo externo
+const _origRenderMailList=renderMailList;
+renderMailList=function(){
+  const scroll=document.getElementById('mailListScroll');
+  const items=getFilteredMails();
+
+  if(items.length===0){
+    const msgs={inbox:'Tu bandeja está vacía.',starred:'No tienes correos destacados.',sent:'No has enviado correos.'};
+    scroll.innerHTML=`<div class="mail-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg><p>${msgs[activeFolder]||'Sin resultados.'}</p></div>`;
+    return;
+  }
+  scroll.innerHTML='';
+  items.forEach((m,i)=>{
+    const isOut=activeFolder==='sent';
+    const displayName=isOut?(m.toName||m.to):(m.fromName||m.from);
+    const isUnread=!isOut&&!m.read;
+    const color=m.fromColor||'#CC785C';
+    const isExternal=m.external||(m.from&&!m.from.endsWith('@'+BARO_DOMAIN)&&!isOut);
+
+    const btn=document.createElement('button');
+    btn.className='mail-item'+(isUnread?' unread':'')+(m.id===activeMailId?' active':'');
+    btn.style.animationDelay=(Math.min(i,14)*0.025)+'s';
+    btn.innerHTML=`
+      <div class="mail-avatar" style="background:${escapeHtml(color)}">${initials(displayName||'?')}</div>
+      <div class="mail-body">
+        <div class="mail-top">
+          <span class="mail-from">${escapeHtml(displayName||'—')}</span>
+          <span class="mail-time">${formatDateTime(m.timestamp)}</span>
+        </div>
+        <div class="mail-subject">${escapeHtml(m.subject||'(sin asunto)')}</div>
+        <div class="mail-preview">${escapeHtml((m.body||'').substring(0,70))}</div>
+        <div class="mail-indicators">
+          ${isExternal?'<span class="external-badge">🌐 Externo</span>':''}
+          ${isUnread?'<span class="unread-dot"></span>':''}
+          ${m.starred?'<span class="star-dot">★</span>':''}
+        </div>
+      </div>`;
+    btn.addEventListener('click',()=>openMail(m));
+    scroll.appendChild(btn);
+  });
+};
+
+// Modificar showReadView para mostrar badge de correo externo
+const _origShowReadView=showReadView;
+showReadView=function(m){
+  document.getElementById('readEmpty').style.display='none';
+  const rv=document.getElementById('readView');
+  rv.style.display='flex';rv.style.flexDirection='column';rv.style.flex='1';rv.style.overflow='hidden';
+
+  const displayName=m.fromName||m.from||'—';
+  const isExternal=m.external||(m.from&&!m.from.endsWith('@'+BARO_DOMAIN));
+  
+  document.getElementById('readSubject').textContent=m.subject||'(sin asunto)';
+  document.getElementById('readAvatar').textContent=initials(displayName);
+  document.getElementById('readAvatar').style.background=m.fromColor||'#CC785C';
+  document.getElementById('readFromName').innerHTML=escapeHtml(displayName)+(isExternal?' <span class="external-badge">🌐 Correo externo</span>':'');
+  document.getElementById('readFromAddr').textContent=m.from||'—';
+  document.getElementById('readTime').textContent=formatDateTimeFull(m.timestamp);
+  document.getElementById('readBody').textContent=m.body||'';
+
+  // Botón estrella
+  const starBtn=document.getElementById('starBtn');
+  starBtn.classList.toggle('starred',!!m.starred);
+  starBtn.innerHTML=`<svg viewBox="0 0 24 24" fill="${m.starred?'var(--star)':'none'}" stroke="${m.starred?'var(--star)':'currentColor'}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${m.starred?'Quitar estrella':'Destacar'}`;
+
+  starBtn.onclick=async()=>{
+    const newVal=!mailsData[m.id]?.starred;
+    await update(ref(db,'baro_mails/'+m.id),{starred:newVal});
+    showToast(newVal?'⭐ Marcado como destacado.':'Destacado eliminado.','success');
+  };
+  document.getElementById('unreadBtn').onclick=async()=>{
+    await update(ref(db,'baro_mails/'+m.id),{read:false});
+    showToast('Marcado como no leído.','info');
+    hideReadView();
+    document.getElementById('screen-mail').classList.remove('mail-open');
+  };
+  
+  // Responder: si es correo externo, abrir mailto
+  const replyBtn=document.getElementById('replyBtn');
+  if(isExternal&&m.from){
+    replyBtn.onclick=()=>{
+      const subject=encodeURIComponent('Re: '+(m.subject||''));
+      const body=encodeURIComponent('\n\n--- Mensaje original de '+(m.fromName||m.from)+' ---\n'+(m.body||''));
+      window.location.href='mailto:'+m.from+'?subject='+subject+'&body='+body;
+      showToast('Abriendo tu app de correo para responder...','info');
+    };
+  }else{
+    replyBtn.onclick=()=>openCompose({to:m.from,subject:`Re: ${m.subject||''}`,body:`\n\n--- Mensaje original de ${m.fromName||m.from} ---\n${m.body||''}`});
+  }
+  
+  document.getElementById('forwardBtn').onclick=()=>openCompose({subject:`Fwd: ${m.subject||''}`,body:`\n\n--- Mensaje reenviado ---\nDe: ${m.fromName||m.from}\nAsunto: ${m.subject||''}\n\n${m.body||''}`});
+  document.getElementById('deleteBtn').onclick=async()=>{
+    if(!confirm('¿Eliminar este correo permanentemente?')) return;
+    await remove(ref(db,'baro_mails/'+m.id));
+    hideReadView();
+    document.getElementById('screen-mail').classList.remove('mail-open');
+    showToast('Correo eliminado.','info');
+  };
+};
+
 /* ═══════════ ARRANQUE ═══════════ */
+// Primero verificar si es un enlace de formulario público
+if(initPublicForm()){
+  // Si se inicializó el formulario público, no continuar con el flujo normal
+}else{
 try{
   onAuthStateChanged(auth, async user=>{
     if(user){
@@ -1122,6 +1570,7 @@ try{
 }catch(e){
   console.error(e);
   showScreen('register');
+}
 }
 </script>
 
