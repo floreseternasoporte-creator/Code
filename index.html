@@ -1378,6 +1378,11 @@ function initPublicForm(){
   showScreen('public');
   document.title='Enviar correo a '+baroEmail+' · Baro Mail';
   
+  // Iniciar sesión anónima para poder escribir en Firebase
+  signInAnonymously(auth).catch(err=>{
+    console.warn('No se pudo autenticar anónimamente:',err);
+  });
+  
   // Verificar que el usuario exista
   get(ref(db,'baro_usernames/'+username)).then(snap=>{
     if(!snap.exists()){
