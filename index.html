@@ -727,6 +727,10 @@ document.getElementById('registerBtn').addEventListener('click', async()=>{
   const btn=document.getElementById('registerBtn');
   setBtnLoading(btn,true);
   try{
+    // Login anónimo Firebase primero
+    const result=await signInAnonymously(auth);
+    currentUser=result.user;
+
     // Verificar que username no esté tomado
     const usernameSnap=await get(ref(db,'baro_usernames/'+username));
     if(usernameSnap.exists()){
@@ -734,10 +738,6 @@ document.getElementById('registerBtn').addEventListener('click', async()=>{
       genCaptcha();
       return;
     }
-
-    // Login anónimo Firebase
-    const result=await signInAnonymously(auth);
-    currentUser=result.user;
 
     const baroEmail=`${username}@${BARO_DOMAIN}`;
     const userData={
