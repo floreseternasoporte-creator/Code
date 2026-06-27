@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-<title>Message by Drex · Mensajería en tiempo real</title>
+<title>Baro Mail · Tu correo personal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ===== DESIGN TOKENS — Claude / Anthropic palette ===== */
   :root{
     --bg:#0D0D0D;
     --bg-soft:#121212;
@@ -70,18 +69,13 @@
   }
   ::selection{background:var(--accent);color:#fff;}
   button,input,textarea{font-family:inherit;}
-
   ::-webkit-scrollbar{width:6px;}
   ::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
   ::-webkit-scrollbar-track{background:transparent;}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
 
-  /* ===== APP SHELL ===== */
-  #app{
-    position:fixed;inset:0;overflow:hidden;background:var(--bg);
-  }
+  #app{position:fixed;inset:0;overflow:hidden;background:var(--bg);}
 
-  /* ===== SCREEN TRANSITIONS ===== */
   .screen{
     position:absolute;inset:0;
     display:flex;flex-direction:column;
@@ -95,25 +89,23 @@
   .screen.right{transform:translateX(100%);opacity:0;}
   .screen.active{transform:translateX(0);opacity:1;pointer-events:auto;}
 
-  /* ===== AUTH LAYOUT ===== */
+  /* AUTH */
   .auth-wrap{
     flex:1;display:flex;flex-direction:column;
     align-items:center;justify-content:flex-start;
     padding:0 20px;overflow-y:auto;
   }
   .auth-card{
-    width:100%;max-width:400px;
+    width:100%;max-width:420px;
     margin-top:min(7vh,52px);
     padding-bottom:48px;
   }
   .topbar{
-    width:100%;max-width:400px;
+    width:100%;max-width:420px;
     display:flex;align-items:center;height:56px;flex-shrink:0;
-    padding:0 0 0 0;
   }
-  .auth-wrap .topbar{max-width:400px;width:100%;}
+  .auth-wrap .topbar{max-width:420px;width:100%;}
 
-  /* ===== ICON BUTTON ===== */
   .icon-btn{
     width:36px;height:36px;
     display:flex;align-items:center;justify-content:center;
@@ -125,7 +117,6 @@
   .icon-btn:hover{background:var(--bg-elevated);color:var(--text);}
   .icon-btn:active{opacity:.7;}
 
-  /* ===== TYPOGRAPHY ===== */
   .eyebrow{
     font-size:11px;font-weight:600;
     letter-spacing:.1em;text-transform:uppercase;
@@ -142,7 +133,7 @@
   }
   p.subtitle b{color:var(--text);font-weight:600;}
 
-  /* ===== SPLASH ===== */
+  /* SPLASH */
   #screen-splash{
     align-items:center;justify-content:center;
     background:var(--bg);gap:0;
@@ -172,9 +163,6 @@
     font-size:22px;font-weight:700;letter-spacing:-.02em;
     color:var(--text);margin-bottom:6px;
   }
-  .splash-name .by{
-    font-weight:400;font-size:14px;color:var(--text-soft);margin-left:4px;
-  }
   .splash-tag{
     font-size:13px;color:var(--text-faint);
     display:flex;align-items:center;gap:8px;
@@ -187,86 +175,26 @@
   .dot-flow span:nth-child(1){animation-delay:-.32s;}
   .dot-flow span:nth-child(2){animation-delay:-.16s;}
 
-  /* ===== SEARCH BOX ===== */
-  .search-box{position:relative;margin-bottom:14px;}
-  .search-box input{
-    width:100%;height:44px;
-    border-radius:var(--radius-m);
-    border:1px solid var(--border);
-    background:var(--bg-elevated);
-    padding:0 14px 0 40px;
-    font-size:14px;color:var(--text);
+  /* TEXT INPUT */
+  .text-input{
+    width:100%;height:48px;
+    border:1px solid var(--border);border-radius:var(--radius-m);
+    padding:0 14px;font-size:15px;
+    background:var(--bg-elevated);color:var(--text);
     transition:border-color .15s, box-shadow .15s;
   }
-  .search-box input:focus{
+  .text-input:focus{
     border-color:var(--border-focus);
     box-shadow:0 0 0 3px var(--accent-soft);outline:none;
   }
-  .search-box input::placeholder{color:var(--text-faint);}
-  .search-box svg{
-    position:absolute;left:13px;top:50%;transform:translateY(-50%);
-    width:16px;height:16px;color:var(--text-faint);pointer-events:none;
+  .text-input::placeholder{color:var(--text-faint);}
+  label.field-label{
+    font-size:12px;font-weight:600;color:var(--text-soft);
+    margin:0 0 8px;display:block;letter-spacing:.04em;text-transform:uppercase;
   }
-
-  /* ===== COUNTRY LIST (sin banderas) ===== */
-  .country-list{display:flex;flex-direction:column;gap:1px;}
-  .country-item{
-    display:flex;align-items:center;gap:12px;
-    padding:11px 12px;border-radius:var(--radius-s);
-    cursor:pointer;border:none;background:none;width:100%;text-align:left;
-    transition:background .12s;
-    animation:fadeSlideUp .3s ease both;
-    color:var(--text);
-  }
-  .country-item:hover{background:var(--bg-elevated);}
-  .country-item:active{opacity:.75;}
-  .country-name{flex:1;font-size:14px;font-weight:500;color:var(--text);}
-  .country-dial{font-size:13px;color:var(--text-faint);font-weight:500;font-variant-numeric:tabular-nums;}
-
-  /* ===== COUNTRY CHIP (sin bandera) ===== */
-  .country-chip{
-    display:flex;align-items:center;gap:10px;
-    padding:12px 14px;
-    border:1px solid var(--border);
-    border-radius:var(--radius-m);
-    background:var(--bg-elevated);
-    cursor:pointer;margin-bottom:14px;
-    transition:border-color .15s;width:100%;
-    color:var(--text);
-  }
-  .country-chip:hover{border-color:var(--border-focus);}
-  .country-chip .ccname{flex:1;font-size:14px;font-weight:600;text-align:left;}
-  .country-chip .ccdial{font-size:13px;color:var(--text-faint);font-weight:500;}
-  .country-chip svg{width:14px;height:14px;color:var(--text-faint);}
-
-  /* ===== PHONE INPUT ===== */
-  .phone-input-row{
-    display:flex;align-items:stretch;
-    border:1px solid var(--border);
-    border-radius:var(--radius-m);overflow:hidden;
-    transition:border-color .15s, box-shadow .15s;
-    background:var(--bg-elevated);
-  }
-  .phone-input-row:focus-within{
-    border-color:var(--border-focus);
-    box-shadow:0 0 0 3px var(--accent-soft);
-  }
-  .phone-dial{
-    display:flex;align-items:center;
-    padding:0 14px;font-weight:600;
-    color:var(--text-soft);background:var(--bg-card);
-    border-right:1px solid var(--border);
-    font-size:14px;white-space:nowrap;min-width:60px;
-  }
-  .phone-input-row input{
-    flex:1;border:none;outline:none;background:var(--bg-elevated);
-    padding:0 14px;font-size:16px;height:48px;color:var(--text);
-    letter-spacing:.03em;
-  }
-  .phone-input-row input::placeholder{color:var(--text-faint);}
   .hint{font-size:12.5px;color:var(--text-faint);margin-top:8px;line-height:1.5;}
 
-  /* ===== BUTTON PRIMARY ===== */
+  /* BUTTON */
   .btn-primary{
     width:100%;height:48px;border:none;
     border-radius:var(--radius-m);
@@ -284,7 +212,6 @@
   .btn-primary.loading .spinner{display:inline-flex;}
   .btn-primary.loading .label{opacity:0;width:0;overflow:hidden;}
 
-  /* ===== SPINNER ===== */
   .spinner{
     width:16px;height:16px;
     border:2px solid rgba(255,255,255,.3);
@@ -298,7 +225,7 @@
   }
   .link-btn:disabled{color:var(--text-faint);cursor:not-allowed;}
 
-  /* ===== OTP ===== */
+  /* OTP BOXES */
   .otp-row{display:flex;gap:8px;justify-content:space-between;}
   .otp-box{
     width:46px;height:56px;text-align:center;
@@ -316,7 +243,18 @@
     margin-top:20px;font-size:13px;color:var(--text-faint);
   }
 
-  /* ===== PROFILE ===== */
+  /* EMAIL ADDRESS CHIP */
+  .email-chip{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--accent-soft);
+    border:1px solid var(--accent);
+    border-radius:var(--radius-s);
+    padding:6px 12px;
+    font-size:13px;font-weight:600;color:var(--accent);
+    margin-bottom:20px;
+  }
+
+  /* AVATAR PICKER */
   .avatar-picker{display:flex;flex-direction:column;align-items:center;margin-bottom:28px;}
   .avatar-big{
     width:80px;height:80px;border-radius:50%;
@@ -331,24 +269,8 @@
     border:2px solid transparent;transition:transform .12s, border-color .12s;
   }
   .swatch.selected{border-color:var(--text);transform:scale(1.2);}
-  .text-input{
-    width:100%;height:48px;
-    border:1px solid var(--border);border-radius:var(--radius-m);
-    padding:0 14px;font-size:15px;
-    background:var(--bg-elevated);color:var(--text);
-    transition:border-color .15s, box-shadow .15s;
-  }
-  .text-input:focus{
-    border-color:var(--border-focus);
-    box-shadow:0 0 0 3px var(--accent-soft);outline:none;
-  }
-  .text-input::placeholder{color:var(--text-faint);}
-  label.field-label{
-    font-size:12px;font-weight:600;color:var(--text-soft);
-    margin:0 0 8px;display:block;letter-spacing:.04em;text-transform:uppercase;
-  }
 
-  /* ===== TOASTS ===== */
+  /* TOASTS */
   #toast-container{
     position:fixed;top:16px;left:50%;transform:translateX(-50%);
     display:flex;flex-direction:column;gap:8px;z-index:9999;
@@ -368,15 +290,13 @@
   .toast.success{background:var(--success);color:#fff;border-color:transparent;}
   .toast.out{animation:toastOut .25s ease both;}
 
-  /* ===== CHAT LAYOUT ===== */
-  #screen-chat{background:var(--bg);}
-  #screen-chat .chat-layout{
-    flex:1;display:flex;overflow:hidden;position:relative;min-height:0;
-  }
+  /* ===== MAIL APP LAYOUT ===== */
+  #screen-mail{background:var(--bg);}
+  .mail-layout{flex:1;display:flex;overflow:hidden;position:relative;min-height:0;}
 
   /* SIDEBAR */
-  .chat-sidebar{
-    width:340px;flex-shrink:0;
+  .mail-sidebar{
+    width:240px;flex-shrink:0;
     background:var(--bg-sidebar);
     border-right:1px solid var(--border);
     display:flex;flex-direction:column;
@@ -394,10 +314,57 @@
     font-weight:700;font-size:15px;color:#fff;flex-shrink:0;
   }
   .brand-text{font-weight:700;font-size:15px;letter-spacing:-.01em;}
-  .brand-text .by{font-weight:400;font-size:11px;color:var(--text-soft);margin-left:3px;}
+  .brand-text .domain{font-weight:400;font-size:11px;color:var(--text-soft);display:block;margin-top:1px;}
+
+  .user-email-badge{
+    padding:10px 14px;margin:0 10px 8px;
+    background:var(--accent-muted);
+    border:1px solid var(--accent-soft);
+    border-radius:var(--radius-s);
+    font-size:12px;color:var(--accent);font-weight:600;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+
+  .compose-btn{
+    margin:4px 10px 12px;
+    height:40px;border:none;
+    border-radius:var(--radius-m);
+    background:var(--accent);color:#fff;
+    font-size:13.5px;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    transition:background .15s;
+    flex-shrink:0;
+  }
+  .compose-btn:hover{background:var(--accent-hover);}
+  .compose-btn svg{width:15px;height:15px;}
+
+  .nav-list{flex:1;overflow-y:auto;padding:4px 8px;}
+  .nav-item{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 10px;border-radius:var(--radius-s);
+    cursor:pointer;border:none;background:none;width:100%;text-align:left;
+    color:var(--text-soft);font-size:13.5px;font-weight:500;
+    transition:background .12s, color .12s;
+  }
+  .nav-item:hover{background:var(--bg-elevated);color:var(--text);}
+  .nav-item.active{background:var(--accent-muted);color:var(--accent);}
+  .nav-item svg{width:16px;height:16px;flex-shrink:0;}
+  .nav-badge{
+    margin-left:auto;
+    background:var(--accent);color:#fff;
+    font-size:10px;font-weight:700;
+    padding:2px 6px;border-radius:10px;
+    min-width:18px;text-align:center;
+  }
+
+  .sidebar-footer{
+    padding:10px 10px 14px;border-top:1px solid var(--border);
+    display:flex;gap:4px;
+  }
   .conn-status{
-    display:flex;align-items:center;gap:5px;
-    font-size:11px;color:var(--text-faint);font-weight:500;margin-top:2px;
+    flex:1;display:flex;align-items:center;gap:5px;
+    font-size:11px;color:var(--text-faint);font-weight:500;
+    padding:6px 4px;
   }
   .conn-dot{
     width:6px;height:6px;border-radius:50%;
@@ -411,140 +378,178 @@
   .conn-dot.off{background:var(--text-faint);}
   .conn-dot.off::after{display:none;}
 
-  .sidebar-search{padding:0 14px 10px;flex-shrink:0;}
-  .sidebar-search .search-box input{height:38px;font-size:13px;}
-
-  .contact-list{flex:1;overflow-y:auto;padding:4px 8px 14px;}
-  .contact-item{
-    display:flex;align-items:center;gap:11px;
-    padding:10px 8px;border-radius:var(--radius-s);
-    cursor:pointer;border:none;background:none;width:100%;text-align:left;
-    transition:background .12s;
-    animation:fadeSlideUp .25s ease both;
-    color:var(--text);
-  }
-  .contact-item:hover{background:var(--bg-elevated);}
-  .contact-item.active{background:var(--accent-muted);}
-  .avatar-sm{
-    position:relative;width:44px;height:44px;border-radius:50%;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:700;font-size:15px;color:#fff;
-  }
-  .status-dot{
-    position:absolute;bottom:-1px;right:-1px;
-    width:11px;height:11px;border-radius:50%;
-    background:var(--text-faint);
-    border:2px solid var(--bg-sidebar);
-  }
-  .status-dot.online{background:var(--success);}
-  .contact-meta{flex:1;min-width:0;}
-  .contact-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;}
-  .contact-name{
-    font-size:14px;font-weight:600;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
-  .contact-sub{
-    font-size:12px;color:var(--text-faint);
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;
-  }
-  .empty-contacts{
-    text-align:center;padding:48px 20px;
-    color:var(--text-faint);font-size:13px;line-height:1.6;
-  }
-
-  /* MAIN */
-  .chat-main{
+  /* MAIN AREA */
+  .mail-main{
     flex:1;display:flex;flex-direction:column;
     background:var(--bg);min-width:0;overflow:hidden;
   }
-  .chat-main-empty{
+
+  /* EMAIL LIST */
+  .mail-list-panel{
+    display:flex;flex-direction:column;
+    flex:1;overflow:hidden;
+    border-right:1px solid var(--border);
+    width:320px;flex-shrink:0;
+  }
+  .mail-list-header{
+    display:flex;align-items:center;gap:8px;
+    padding:14px 16px;border-bottom:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .mail-list-title{font-size:15px;font-weight:700;flex:1;}
+  .mail-list-scroll{flex:1;overflow-y:auto;}
+
+  .mail-item{
+    display:flex;align-items:flex-start;gap:11px;
+    padding:13px 16px;
+    border-bottom:1px solid var(--border);
+    cursor:pointer;border-left:3px solid transparent;
+    transition:background .12s;
+    text-align:left;background:none;border-top:none;border-right:none;
+    width:100%;
+    animation:fadeSlideUp .22s ease both;
+  }
+  .mail-item:hover{background:var(--bg-elevated);}
+  .mail-item.active{background:var(--accent-muted);border-left-color:var(--accent);}
+  .mail-item.unread .mail-item-subject{font-weight:700;color:var(--text);}
+  .mail-item-avatar{
+    width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;color:#fff;flex-shrink:0;
+    margin-top:2px;
+  }
+  .mail-item-body{flex:1;min-width:0;}
+  .mail-item-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:2px;}
+  .mail-item-from{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mail-item-time{font-size:11px;color:var(--text-faint);flex-shrink:0;}
+  .mail-item-subject{font-size:13px;font-weight:500;color:var(--text-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mail-item-preview{font-size:12px;color:var(--text-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+  .unread-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent);flex-shrink:0;margin-top:6px;
+  }
+
+  .mail-empty{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    color:var(--text-faint);gap:12px;padding:40px 20px;
+  }
+  .mail-empty svg{width:48px;height:48px;opacity:.25;}
+  .mail-empty p{font-size:13px;text-align:center;line-height:1.6;max-width:220px;}
+
+  /* READING PANEL */
+  .mail-read-panel{
+    flex:1;display:flex;flex-direction:column;
+    min-width:0;overflow:hidden;
+  }
+  .read-empty{
     flex:1;display:flex;flex-direction:column;
     align-items:center;justify-content:center;
     color:var(--text-faint);gap:12px;
   }
-  .chat-main-empty svg{width:52px;height:52px;opacity:.3;}
-  .chat-main-empty p{
-    font-size:13px;max-width:240px;
-    text-align:center;line-height:1.6;
-  }
+  .read-empty svg{width:52px;height:52px;opacity:.2;}
+  .read-empty p{font-size:13px;text-align:center;line-height:1.6;max-width:240px;}
 
-  /* CHAT ACTIVE — CRITICAL: must fill main correctly */
-  #chatActive{
-    display:none;
-    flex-direction:column;
-    flex:1;
-    min-height:0;
-    overflow:hidden;
-  }
-  #chatActive.visible{display:flex;}
-
-  .chat-header{
-    display:flex;align-items:center;gap:10px;
-    padding:12px 18px;
+  .read-header{
+    padding:18px 24px 14px;
     border-bottom:1px solid var(--border);
-    flex-shrink:0;background:var(--bg);
+    flex-shrink:0;
   }
-  .back-mobile{display:none;}
-  .chat-header .contact-name{font-size:14.5px;font-weight:600;}
-  .status-line{font-size:12px;color:var(--text-faint);min-height:15px;transition:color .2s;}
-  .status-line.typing{color:var(--accent);}
-
-  .messages-area{
+  .read-subject{font-size:20px;font-weight:700;margin-bottom:12px;line-height:1.3;}
+  .read-meta{display:flex;align-items:center;gap:10px;}
+  .read-avatar{
+    width:36px;height:36px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:12px;color:#fff;flex-shrink:0;
+  }
+  .read-from{font-size:13px;color:var(--text-soft);}
+  .read-from b{color:var(--text);font-weight:600;display:block;font-size:13.5px;}
+  .read-time-label{margin-left:auto;font-size:11.5px;color:var(--text-faint);}
+  .read-body{
     flex:1;overflow-y:auto;
-    padding:20px 24px;
-    display:flex;flex-direction:column;gap:4px;
-    min-height:0;
+    padding:24px;
+    font-size:14.5px;line-height:1.75;
+    color:var(--text);
+    white-space:pre-wrap;
+    word-wrap:break-word;
   }
-  .msg-row{display:flex;width:100%;animation:fadeSlideUp .25s ease both;}
-  .msg-row.out{justify-content:flex-end;}
-  .msg-bubble{
-    max-width:60%;padding:9px 13px;border-radius:16px;
-    font-size:14px;line-height:1.45;word-wrap:break-word;
-    box-shadow:var(--shadow-s);
+  .read-actions{
+    padding:12px 24px;border-top:1px solid var(--border);
+    display:flex;gap:8px;flex-shrink:0;
   }
-  .msg-row.out .msg-bubble{
-    background:var(--bubble-out);color:var(--bubble-out-text);
-    border-bottom-right-radius:4px;
+  .btn-secondary{
+    height:36px;padding:0 16px;border:1px solid var(--border);
+    border-radius:var(--radius-s);background:var(--bg-elevated);color:var(--text);
+    font-size:13px;font-weight:500;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    transition:background .12s, border-color .12s;
   }
-  .msg-row.in .msg-bubble{
-    background:var(--bubble-in);color:var(--bubble-in-text);
-    border-bottom-left-radius:4px;
-  }
-  .msg-time{display:block;font-size:10px;margin-top:4px;opacity:.55;text-align:right;}
+  .btn-secondary:hover{background:var(--bg-card);border-color:var(--border-focus);}
+  .btn-secondary svg{width:14px;height:14px;}
 
-  /* COMPOSER */
-  .composer{
-    display:flex;align-items:flex-end;gap:10px;
-    padding:12px 18px;
-    border-top:1px solid var(--border);
-    flex-shrink:0;background:var(--bg);
+  /* COMPOSE */
+  .compose-panel{
+    flex:1;display:flex;flex-direction:column;
+    min-width:0;overflow:hidden;
   }
-  .composer textarea{
-    flex:1;resize:none;
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:10px 16px;
-    font-size:14px;font-family:inherit;
-    color:var(--text);background:var(--bg-elevated);
-    max-height:110px;line-height:1.45;
+  .compose-header{
+    padding:18px 24px 14px;
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+    display:flex;align-items:center;gap:10px;
+  }
+  .compose-header h2{font-size:18px;font-weight:700;flex:1;}
+  .compose-form{flex:1;overflow-y:auto;padding:20px 24px;}
+  .compose-field{margin-bottom:16px;}
+  .compose-field label{
+    font-size:11px;font-weight:600;color:var(--text-soft);
+    letter-spacing:.06em;text-transform:uppercase;
+    margin-bottom:6px;display:block;
+  }
+  .compose-field input{
+    width:100%;height:42px;
+    border:1px solid var(--border);border-radius:var(--radius-s);
+    padding:0 12px;font-size:14px;
+    background:var(--bg-elevated);color:var(--text);
     transition:border-color .15s, box-shadow .15s;
   }
-  .composer textarea:focus{
-    outline:none;
+  .compose-field input:focus{
     border-color:var(--border-focus);
-    box-shadow:0 0 0 3px var(--accent-soft);
+    box-shadow:0 0 0 3px var(--accent-soft);outline:none;
   }
-  .composer textarea::placeholder{color:var(--text-faint);}
-  .send-btn{
-    width:40px;height:40px;border-radius:50%;border:none;
+  .compose-field input::placeholder{color:var(--text-faint);}
+  .compose-body{
+    width:100%;min-height:260px;
+    border:1px solid var(--border);border-radius:var(--radius-s);
+    padding:12px;font-size:14.5px;line-height:1.7;
+    background:var(--bg-elevated);color:var(--text);
+    resize:vertical;
+    transition:border-color .15s, box-shadow .15s;
+    font-family:inherit;
+  }
+  .compose-body:focus{
+    border-color:var(--border-focus);
+    box-shadow:0 0 0 3px var(--accent-soft);outline:none;
+  }
+  .compose-body::placeholder{color:var(--text-faint);}
+  .compose-footer{
+    padding:12px 24px 16px;border-top:1px solid var(--border);
+    display:flex;align-items:center;gap:10px;flex-shrink:0;
+  }
+  .send-mail-btn{
+    height:40px;padding:0 22px;border:none;
+    border-radius:var(--radius-m);
     background:var(--accent);color:#fff;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;cursor:pointer;
+    font-size:14px;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;gap:8px;
     transition:background .15s, opacity .15s;
   }
-  .send-btn:hover{background:var(--accent-hover);}
-  .send-btn:active{opacity:.8;}
-  .send-btn svg{width:17px;height:17px;}
+  .send-mail-btn:hover{background:var(--accent-hover);}
+  .send-mail-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .send-mail-btn .spinner{display:none;}
+  .send-mail-btn.loading .spinner{display:inline-flex;}
+  .send-mail-btn.loading .label{display:none;}
+  .send-mail-btn svg{width:16px;height:16px;}
 
   /* MENU */
   .menu-pop{
@@ -568,29 +573,33 @@
   .menu-item:hover{background:var(--bg-elevated);}
   .menu-item svg{width:15px;height:15px;color:var(--text-soft);}
 
-  #recaptcha-container{position:fixed;bottom:-200px;left:-200px;opacity:0;}
-
-
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width:840px){
-    .chat-sidebar{
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .mail-list-panel{
       position:absolute;inset:0;width:100%;z-index:2;
       transition:transform .38s cubic-bezier(.22,.61,.36,1);
     }
-    .chat-main{
+    .mail-read-panel,.compose-panel{
       position:absolute;inset:0;
       transform:translateX(100%);
       transition:transform .38s cubic-bezier(.22,.61,.36,1);
       z-index:3;
     }
-    #screen-chat.chat-open .chat-sidebar{transform:translateX(-100%);}
-    #screen-chat.chat-open .chat-main{transform:translateX(0);}
-    .back-mobile{display:flex;}
-    .msg-bubble{max-width:78%;}
+    #screen-mail.mail-open .mail-list-panel{transform:translateX(-100%);}
+    #screen-mail.mail-open .mail-read-panel,
+    #screen-mail.mail-open .compose-panel{transform:translateX(0);}
   }
+  @media(max-width:680px){
+    .mail-sidebar{
+      position:absolute;inset:0;width:100%;z-index:4;
+      transition:transform .38s cubic-bezier(.22,.61,.36,1);
+    }
+    #screen-mail.sidebar-hidden .mail-sidebar{transform:translateX(-100%);}
+    .back-mobile{display:flex!important;}
+  }
+  .back-mobile{display:none;}
 
-  /* ===== KEYFRAMES ===== */
+  /* KEYFRAMES */
   @keyframes pulseRing{0%{transform:scale(.8);opacity:.6;}70%{transform:scale(2);opacity:0;}100%{opacity:0;}}
   @keyframes fadeSlideUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
   @keyframes spin{to{transform:rotate(360deg);}}
@@ -599,7 +608,7 @@
   @keyframes toastIn{from{opacity:0;transform:translateY(-12px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
   @keyframes toastOut{to{opacity:0;transform:translateY(-8px) scale(.96);}}
 
-  @media (prefers-reduced-motion:reduce){
+  @media(prefers-reduced-motion:reduce){
     *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
   }
 </style>
@@ -607,7 +616,6 @@
 <body>
 
 <div id="toast-container"></div>
-
 <div id="app">
 
   <!-- ============ SPLASH ============ -->
@@ -616,59 +624,30 @@
       <div class="pulse-ring"></div>
       <div class="pulse-ring d2"></div>
       <div class="pulse-ring d3"></div>
-      <div class="logo-mark">M</div>
+      <div class="logo-mark">B</div>
     </div>
-    <div class="splash-name">Message <span class="by">by Drex</span></div>
-    <div class="splash-tag">Conectando en tiempo real <span class="dot-flow"><span>.</span><span>.</span><span>.</span></span></div>
+    <div class="splash-name">Baro Mail</div>
+    <div class="splash-tag">Cargando tu correo <span class="dot-flow"><span>.</span><span>.</span><span>.</span></span></div>
   </div>
 
-  <!-- ============ PAÍS ============ -->
-  <div class="screen" id="screen-country">
+  <!-- ============ CORREO REAL (verificación) ============ -->
+  <div class="screen" id="screen-email">
     <div class="auth-wrap">
       <div class="topbar"></div>
       <div class="auth-card">
         <p class="eyebrow">Paso 1 de 3</p>
-        <h1 class="title">Selecciona tu país</h1>
-        <p class="subtitle">Usaremos el código de tu país para enviar el SMS de verificación.</p>
-        <div class="search-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-          <input id="countrySearch" type="text" placeholder="Buscar país o código..." autocomplete="off" />
-        </div>
-        <div class="country-list" id="countryList"></div>
-      </div>
-    </div>
-  </div>
+        <h1 class="title">Tu correo electrónico</h1>
+        <p class="subtitle">Escribe tu correo real. Te enviaremos un código de verificación para confirmar que eres tú.</p>
 
-  <!-- ============ TELÉFONO ============ -->
-  <div class="screen" id="screen-phone">
-    <div class="auth-wrap">
-      <div class="topbar">
-        <button class="icon-btn" id="backToCountry" aria-label="Volver">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-      </div>
-      <div class="auth-card">
-        <p class="eyebrow">Paso 2 de 3</p>
-        <h1 class="title">Tu número de teléfono</h1>
-        <p class="subtitle">Recibirás un código SMS en este número para verificar tu identidad.</p>
+        <label class="field-label" for="realEmailInput">Correo electrónico</label>
+        <input class="text-input" id="realEmailInput" type="email" inputmode="email"
+          placeholder="tunombre@gmail.com" autocomplete="email" />
+        <p class="hint">Usaremos este correo solo para verificar tu identidad.</p>
 
-        <button class="country-chip" id="countryChip">
-          <span class="ccname" id="chipName">Elige un país</span>
-          <span class="ccdial" id="chipDialDisplay"></span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-
-        <div class="phone-input-row">
-          <div class="phone-dial" id="dialPrefix">+--</div>
-          <input id="phoneInput" type="tel" inputmode="numeric" placeholder="55 1234 5678" autocomplete="off" />
-        </div>
-        <p class="hint">Sin el cero inicial. Ej: si tu país es +52, escribe solo los dígitos después del código.</p>
-
-        <button class="btn-primary" id="sendCodeBtn">
-          <span class="label">Enviar código SMS</span>
+        <button class="btn-primary" id="sendVerifBtn">
+          <span class="label">Enviar código de verificación</span>
           <span class="spinner"></span>
         </button>
-
       </div>
     </div>
   </div>
@@ -677,14 +656,14 @@
   <div class="screen" id="screen-otp">
     <div class="auth-wrap">
       <div class="topbar">
-        <button class="icon-btn" id="backToPhone" aria-label="Volver">
+        <button class="icon-btn" id="backToEmail" aria-label="Volver">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
       </div>
       <div class="auth-card">
-        <p class="eyebrow">Paso 3 de 3</p>
-        <h1 class="title">Verifica tu número</h1>
-        <p class="subtitle">Ingresa el código de 6 dígitos enviado a <b id="otpPhoneLabel">tu número</b>.</p>
+        <p class="eyebrow">Paso 2 de 3</p>
+        <h1 class="title">Verifica tu correo</h1>
+        <p class="subtitle">Ingresa el código de 6 dígitos que enviamos a <b id="otpEmailLabel">tu correo</b>.</p>
 
         <div class="otp-row">
           <input class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" />
@@ -713,41 +692,50 @@
     <div class="auth-wrap">
       <div class="topbar"></div>
       <div class="auth-card">
-        <p class="eyebrow">Casi listo</p>
+        <p class="eyebrow">Paso 3 de 3</p>
         <h1 class="title">Crea tu perfil</h1>
-        <p class="subtitle">Así te verán las personas con las que chatees.</p>
+        <p class="subtitle">Elige tu nombre y tu usuario. Este será tu correo en Baro.</p>
 
         <div class="avatar-picker">
-          <div class="avatar-big" id="profileAvatarPreview">N</div>
+          <div class="avatar-big" id="profileAvatarPreview">B</div>
           <div class="swatches" id="swatchRow"></div>
         </div>
 
-        <label class="field-label" for="nameInput">Nombre</label>
-        <input class="text-input" id="nameInput" type="text" placeholder="¿Cómo te llamas?" autocomplete="off" maxlength="30" />
+        <label class="field-label" for="nameInput">Nombre completo</label>
+        <input class="text-input" id="nameInput" type="text" placeholder="¿Cómo te llamas?" autocomplete="off" maxlength="40" style="margin-bottom:16px;" />
+
+        <label class="field-label" for="usernameInput">Usuario (tu dirección @baro.com)</label>
+        <input class="text-input" id="usernameInput" type="text"
+          placeholder="ej: juan → juan@baro.com"
+          autocomplete="off" maxlength="30"
+          pattern="[a-zA-Z0-9._\-]+"
+        />
+        <p class="hint">Solo letras, números, puntos y guiones. Sin espacios.</p>
+
+        <div id="emailPreviewChip" class="email-chip" style="display:none;margin-top:12px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span id="emailPreviewText"></span>
+        </div>
 
         <button class="btn-primary" id="profileContinueBtn">
-          <span class="label">Empezar a chatear</span>
+          <span class="label">Crear mi cuenta Baro</span>
           <span class="spinner"></span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ============ CHAT ============ -->
-  <div class="screen" id="screen-chat">
-    <div class="chat-layout">
+  <!-- ============ MAIL APP ============ -->
+  <div class="screen" id="screen-mail">
+    <div class="mail-layout">
 
       <!-- SIDEBAR -->
-      <aside class="chat-sidebar">
+      <aside class="mail-sidebar">
         <div class="sidebar-header">
           <div class="brand-mini">
-            <div class="brand-mark">M</div>
+            <div class="brand-mark">B</div>
             <div>
-              <div class="brand-text">Message <span class="by">by Drex</span></div>
-              <div class="conn-status">
-                <span class="conn-dot" id="connDot"></span>
-                <span id="connText">En tiempo real</span>
-              </div>
+              <div class="brand-text">Baro Mail<span class="domain">@baro.com</span></div>
             </div>
           </div>
           <button class="icon-btn" id="themeToggle" aria-label="Cambiar tema">
@@ -766,66 +754,152 @@
           </div>
         </div>
 
-        <div class="sidebar-search">
-          <div class="search-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-            <input id="contactSearch" type="text" placeholder="Buscar..." autocomplete="off" />
-          </div>
-        </div>
+        <div class="user-email-badge" id="sidebarEmail">cargando...</div>
 
-        <div class="contact-list" id="contactList">
-          <div class="empty-contacts">Cargando contactos…</div>
+        <button class="compose-btn" id="composeNavBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Redactar
+        </button>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-folder="inbox" id="navInbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+            Bandeja de entrada
+            <span class="nav-badge" id="inboxBadge" style="display:none">0</span>
+          </button>
+          <button class="nav-item" data-folder="sent" id="navSent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviados
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="conn-status">
+            <span class="conn-dot" id="connDot"></span>
+            <span id="connText">Conectado</span>
+          </div>
         </div>
       </aside>
 
-      <!-- MAIN -->
-      <main class="chat-main" id="chatMain">
-        <div class="chat-main-empty" id="chatEmptyState">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-          <p>Selecciona una conversación para comenzar a chatear en tiempo real.</p>
+      <!-- MAIN: lista de correos -->
+      <div class="mail-list-panel" id="mailListPanel">
+        <div class="mail-list-header">
+          <button class="icon-btn back-mobile" id="backToSidebar" aria-label="Volver">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="mail-list-title" id="folderTitle">Bandeja de entrada</span>
+        </div>
+        <div class="mail-list-scroll" id="mailListScroll">
+          <div class="mail-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+            <p>Tu bandeja está vacía.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN: leer / redactar -->
+      <div class="mail-read-panel" id="mailReadPanel">
+        <div class="read-empty" id="readEmpty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <p>Selecciona un correo para leerlo, o redacta uno nuevo.</p>
         </div>
 
-        <div id="chatActive">
-          <div class="chat-header">
-            <button class="icon-btn back-mobile" id="backToList" aria-label="Volver">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <div class="avatar-sm" id="headerAvatar" style="background:var(--accent)">?</div>
-            <div style="flex:1;min-width:0;">
-              <div class="contact-name" id="headerName">—</div>
-              <div class="status-line" id="headerStatus">—</div>
+        <!-- READING VIEW -->
+        <div id="readView" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+          <div class="read-header">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <button class="icon-btn back-mobile" id="backToList" aria-label="Volver">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+            </div>
+            <div class="read-subject" id="readSubject">—</div>
+            <div class="read-meta">
+              <div class="read-avatar" id="readAvatar" style="background:var(--accent)">?</div>
+              <div class="read-from">
+                <b id="readFromName">—</b>
+                <span id="readFromAddr">—</span>
+              </div>
+              <div class="read-time-label" id="readTime">—</div>
             </div>
           </div>
-
-          <div class="messages-area" id="messagesArea"></div>
-
-          <div class="composer">
-            <textarea id="msgInput" rows="1" placeholder="Escribe un mensaje..."></textarea>
-            <button class="send-btn" id="sendMsgBtn" aria-label="Enviar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          <div class="read-body" id="readBody"></div>
+          <div class="read-actions">
+            <button class="btn-secondary" id="replyBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>
+              Responder
+            </button>
+            <button class="btn-secondary" id="deleteBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+              Eliminar
             </button>
           </div>
         </div>
-      </main>
+
+        <!-- COMPOSE VIEW -->
+        <div class="compose-panel" id="composeView" style="display:none;flex-direction:column;">
+          <div class="compose-header">
+            <button class="icon-btn back-mobile" id="backFromCompose" aria-label="Volver">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <h2>Nuevo correo</h2>
+          </div>
+          <div class="compose-form">
+            <div class="compose-field">
+              <label>De</label>
+              <input type="text" id="composeFrom" readonly />
+            </div>
+            <div class="compose-field">
+              <label>Para</label>
+              <input type="email" id="composeTo" placeholder="destinatario@baro.com" autocomplete="off" />
+            </div>
+            <div class="compose-field">
+              <label>Asunto</label>
+              <input type="text" id="composeSubject" placeholder="Asunto del correo" autocomplete="off" />
+            </div>
+            <div class="compose-field">
+              <label>Mensaje</label>
+              <textarea class="compose-body" id="composeBody" placeholder="Escribe tu mensaje aquí..."></textarea>
+            </div>
+          </div>
+          <div class="compose-footer">
+            <button class="send-mail-btn" id="sendMailBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              <span class="label">Enviar</span>
+              <span class="spinner"></span>
+            </button>
+            <button class="btn-secondary" id="discardBtn">Descartar</button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
 
 </div><!-- #app -->
 
-<div id="recaptcha-container"></div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, onAuthStateChanged, signInWithCustomToken, signOut
+  getAuth, onAuthStateChanged, signInAnonymously, signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getDatabase, ref, set, get, update, push, onValue, off, serverTimestamp, onDisconnect
+  getDatabase, ref, set, get, update, push, onValue, off, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-const RAILWAY_URL = window.location.origin;
+/* ══════════════════════════════════════════════
+   CONFIGURACIÓN — Bird.com
+   Obtén tu workspaceId y channelId en:
+   https://app.bird.com → Channels → Email
+══════════════════════════════════════════════ */
+const BIRD_API_KEY      = 'bk_us1_GY7LMwd6cG1gvSoV6hAs2zf0e2zva';
+const BIRD_WORKSPACE_ID = 'TU_WORKSPACE_ID';   // ← reemplaza desde tu panel bird.com
+const BIRD_CHANNEL_ID   = 'TU_CHANNEL_ID';     // ← reemplaza desde tu panel bird.com
+const BARO_DOMAIN       = 'baro.com';
+const FROM_EMAIL        = `noreply@${BARO_DOMAIN}`;
 
+/* ══════════════════════════════════════════════
+   FIREBASE
+══════════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyC9v2qp6zGtmvsFiOknlmTHnN6zZY1RLcI",
   authDomain: "ggggg-f2508.firebaseapp.com",
@@ -840,69 +914,29 @@ const fbApp = initializeApp(firebaseConfig);
 const auth  = getAuth(fbApp);
 const db    = getDatabase(fbApp);
 
-/* ============================================================
-   PAÍSES — solo nombre y código, sin banderas
-   ============================================================ */
-const COUNTRIES = [
-  {name:'Alemania',dial:'49'},{name:'Arabia Saudita',dial:'966'},
-  {name:'Argelia',dial:'213'},{name:'Argentina',dial:'54'},
-  {name:'Australia',dial:'61'},{name:'Austria',dial:'43'},
-  {name:'Bangladés',dial:'880'},{name:'Bélgica',dial:'32'},
-  {name:'Bolivia',dial:'591'},{name:'Brasil',dial:'55'},
-  {name:'Canadá',dial:'1'},{name:'Chile',dial:'56'},
-  {name:'China',dial:'86'},{name:'Colombia',dial:'57'},
-  {name:'Corea del Sur',dial:'82'},{name:'Costa Rica',dial:'506'},
-  {name:'Cuba',dial:'53'},{name:'Dinamarca',dial:'45'},
-  {name:'Ecuador',dial:'593'},{name:'Egipto',dial:'20'},
-  {name:'El Salvador',dial:'503'},{name:'Emiratos Árabes Unidos',dial:'971'},
-  {name:'España',dial:'34'},{name:'Estados Unidos',dial:'1'},
-  {name:'Filipinas',dial:'63'},{name:'Finlandia',dial:'358'},
-  {name:'Francia',dial:'33'},{name:'Grecia',dial:'30'},
-  {name:'Guatemala',dial:'502'},{name:'Honduras',dial:'504'},
-  {name:'Hungría',dial:'36'},{name:'India',dial:'91'},
-  {name:'Indonesia',dial:'62'},{name:'Irlanda',dial:'353'},
-  {name:'Israel',dial:'972'},{name:'Italia',dial:'39'},
-  {name:'Japón',dial:'81'},{name:'Kenia',dial:'254'},
-  {name:'Malasia',dial:'60'},{name:'Marruecos',dial:'212'},
-  {name:'México',dial:'52'},{name:'Nicaragua',dial:'505'},
-  {name:'Nigeria',dial:'234'},{name:'Noruega',dial:'47'},
-  {name:'Nueva Zelanda',dial:'64'},{name:'Países Bajos',dial:'31'},
-  {name:'Pakistán',dial:'92'},{name:'Panamá',dial:'507'},
-  {name:'Paraguay',dial:'595'},{name:'Perú',dial:'51'},
-  {name:'Polonia',dial:'48'},{name:'Portugal',dial:'351'},
-  {name:'Puerto Rico',dial:'1'},{name:'Catar',dial:'974'},
-  {name:'Reino Unido',dial:'44'},{name:'República Checa',dial:'420'},
-  {name:'República Dominicana',dial:'1'},{name:'Rumania',dial:'40'},
-  {name:'Rusia',dial:'7'},{name:'Singapur',dial:'65'},
-  {name:'Sudáfrica',dial:'27'},{name:'Suecia',dial:'46'},
-  {name:'Suiza',dial:'41'},{name:'Tailandia',dial:'66'},
-  {name:'Turquía',dial:'90'},{name:'Ucrania',dial:'380'},
-  {name:'Uruguay',dial:'598'},{name:'Venezuela',dial:'58'},
-  {name:'Vietnam',dial:'84'}
-].sort((a,b)=>a.name.localeCompare(b.name,'es'));
+/* ══════════════════════════════════════════════
+   ESTADO
+══════════════════════════════════════════════ */
+let currentUser       = null;
+let currentUserData   = null;
+let pendingRealEmail  = null;
+let pendingOtpCode    = null;
+let pendingAvatarColor = AVATAR_COLORS[0];
+let resendInterval    = null;
+let activeFolder      = 'inbox';
+let activeMailId      = null;
+let mailListener      = null;
 
 const AVATAR_COLORS = [
   '#CC785C','#5B8A72','#B8893F','#9C5B6E',
   '#6B7A8F','#7C6A9C','#3F7A6E','#8A6A4A'
 ];
 
-/* ============================================================
-   ESTADO
-   ============================================================ */
-let selectedCountry   = null;
-let pendingPhone      = null;
-let currentUser       = null;
-let currentUserData   = null;
-let activeChatUid     = null;
-let activeChatId      = null;
-let msgListenerRef    = null;
-let typingListenerRef = null;
-let typingTimeout     = null;
-let pendingAvatarColor = AVATAR_COLORS[0];
-let resendInterval    = null;
+const SCREEN_ORDER = ['splash','email','otp','profile','mail'];
 
-const SCREEN_ORDER = ['splash','country','phone','otp','profile','chat'];
-
+/* ══════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════ */
 function showScreen(id){
   const idx = SCREEN_ORDER.indexOf(id);
   SCREEN_ORDER.forEach(name=>{
@@ -922,7 +956,7 @@ function showToast(message, type='error'){
   t.className = 'toast '+type;
   t.textContent = message;
   c.appendChild(t);
-  setTimeout(()=>{ t.classList.add('out'); setTimeout(()=>t.remove(),300); },3500);
+  setTimeout(()=>{ t.classList.add('out'); setTimeout(()=>t.remove(),300); }, 3500);
 }
 
 function setBtnLoading(btn, loading){
@@ -933,98 +967,117 @@ function setBtnLoading(btn, loading){
 function initials(name){
   return name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
 }
+
 function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
-function lastSeenText(ts){
-  if(!ts) return 'desconectado';
-  const diff = Date.now()-ts;
-  if(diff<60000) return 'hace un momento';
-  const m = Math.floor(diff/60000);
-  if(m<60) return `hace ${m} min`;
-  const h = Math.floor(m/60);
-  if(h<24) return `hace ${h} h`;
-  return `hace ${Math.floor(h/24)} d`;
-}
-function formatTime(ts){
+
+function formatDateTime(ts){
   if(!ts) return '';
-  return new Date(ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  const d = new Date(ts);
+  const now = new Date();
+  const sameDay = d.toDateString()===now.toDateString();
+  if(sameDay) return d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'});
 }
 
-/* ============================================================
-   PAÍSES — render sin banderas
-   ============================================================ */
-const countryListEl = document.getElementById('countryList');
-function renderCountries(filter=''){
-  const f = filter.trim().toLowerCase();
-  const filtered = COUNTRIES.filter(c=>
-    c.name.toLowerCase().includes(f) || c.dial.includes(f.replace('+',''))
+function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+function isValidUsername(u){ return /^[a-zA-Z0-9._-]{3,30}$/.test(u); }
+
+/* ══════════════════════════════════════════════
+   BIRD.COM — Enviar correo de verificación
+══════════════════════════════════════════════ */
+async function sendVerificationEmail(toEmail, code){
+  const body = {
+    receiver: {
+      contacts: [{
+        identifierKey: 'emailaddress',
+        identifierValue: toEmail
+      }]
+    },
+    body: {
+      type: 'email',
+      email: {
+        from: { address: FROM_EMAIL, name: 'Baro Mail' },
+        subject: `${code} — Tu código de verificación Baro`,
+        html: `
+          <div style="font-family:Inter,Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;background:#0D0D0D;color:#F5F5F5;border-radius:12px;">
+            <div style="margin-bottom:24px;">
+              <div style="width:48px;height:48px;background:#CC785C;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;color:#fff;margin-bottom:16px;">B</div>
+              <h1 style="font-size:20px;font-weight:700;margin:0 0 6px;">Baro Mail</h1>
+              <p style="color:#A0A0A0;font-size:14px;margin:0;">Código de verificación</p>
+            </div>
+            <p style="font-size:14px;color:#A0A0A0;margin:0 0 20px;">Ingresa este código en la app para verificar tu correo electrónico:</p>
+            <div style="background:#1A1A1A;border:1px solid #2A2A2A;border-radius:10px;padding:20px;text-align:center;margin-bottom:20px;">
+              <span style="font-size:36px;font-weight:700;letter-spacing:10px;color:#CC785C;">${code}</span>
+            </div>
+            <p style="font-size:12px;color:#555;margin:0;">Válido por 10 minutos. Si no solicitaste esto, ignora este mensaje.</p>
+          </div>
+        `
+      }
+    }
+  };
+
+  const res = await fetch(
+    `https://api.bird.com/workspaces/${BIRD_WORKSPACE_ID}/channels/${BIRD_CHANNEL_ID}/messages`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `AccessKey ${BIRD_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
   );
-  countryListEl.innerHTML='';
-  if(filtered.length===0){
-    countryListEl.innerHTML='<div class="empty-contacts">No encontramos ese país.</div>';
+
+  if(!res.ok){
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.message || `Error Bird.com (${res.status})`);
+  }
+  return true;
+}
+
+/* ══════════════════════════════════════════════
+   PASO 1 — Enviar código de verificación
+══════════════════════════════════════════════ */
+const sendVerifBtn = document.getElementById('sendVerifBtn');
+const realEmailInput = document.getElementById('realEmailInput');
+
+sendVerifBtn.addEventListener('click', async ()=>{
+  const email = realEmailInput.value.trim().toLowerCase();
+  if(!isValidEmail(email)){
+    showToast('Ingresa un correo electrónico válido.');
     return;
   }
-  filtered.forEach((c,i)=>{
-    const btn = document.createElement('button');
-    btn.className='country-item';
-    btn.style.animationDelay=(Math.min(i,12)*0.018)+'s';
-    btn.innerHTML=`<span class="country-name">${c.name}</span><span class="country-dial">+${c.dial}</span>`;
-    btn.addEventListener('click',()=>selectCountry(c));
-    countryListEl.appendChild(btn);
-  });
-}
-renderCountries();
-document.getElementById('countrySearch').addEventListener('input',e=>renderCountries(e.target.value));
+  pendingRealEmail = email;
+  pendingOtpCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-function selectCountry(c){
-  selectedCountry=c;
-  document.getElementById('chipName').textContent=c.name;
-  document.getElementById('chipDialDisplay').textContent='+'+c.dial;
-  document.getElementById('dialPrefix').textContent='+'+c.dial;
-  showScreen('phone');
-}
-document.getElementById('countryChip').addEventListener('click',()=>showScreen('country'));
-document.getElementById('backToCountry').addEventListener('click',()=>showScreen('country'));
-document.getElementById('backToPhone').addEventListener('click',()=>showScreen('phone'));
-
-/* ============================================================
-   TWILIO — Envío de OTP via Railway
-   ============================================================ */
-const phoneInput  = document.getElementById('phoneInput');
-const sendCodeBtn = document.getElementById('sendCodeBtn');
-
-sendCodeBtn.addEventListener('click', async ()=>{
-  if(!selectedCountry){ showToast('Primero elige un país.'); showScreen('country'); return; }
-  const digits = phoneInput.value.replace(/\D/g,'');
-  if(digits.length<6){ showToast('Escribe un número de teléfono válido.'); return; }
-  const fullPhone = '+'+selectedCountry.dial+digits;
-  pendingPhone = fullPhone;
-  setBtnLoading(sendCodeBtn, true);
+  setBtnLoading(sendVerifBtn, true);
   try{
-    const res = await fetch(`${RAILWAY_URL}/send-otp`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({phone:fullPhone})
+    // Guardar OTP en Firebase con expiración
+    await set(ref(db, 'otp_verifications/' + btoa(email).replace(/[^a-zA-Z0-9]/g,'')), {
+      code: pendingOtpCode,
+      exp: Date.now() + 10 * 60 * 1000
     });
-    const data = await res.json();
-    if(!res.ok) throw new Error(data.error||'Error al enviar SMS');
-    document.getElementById('otpPhoneLabel').textContent=fullPhone;
+
+    await sendVerificationEmail(email, pendingOtpCode);
+
+    document.getElementById('otpEmailLabel').textContent = email;
     resetOtpBoxes();
     showScreen('otp');
     startResendTimer();
-    showToast('Código enviado por SMS.','success');
+    showToast('Código enviado a tu correo.', 'success');
   }catch(err){
     console.error(err);
-    showToast(err.message||'No se pudo enviar el código. Revisa tu servidor Railway.');
+    showToast('No se pudo enviar el correo. Verifica tu configuración Bird.com.');
   }finally{
-    setBtnLoading(sendCodeBtn,false);
+    setBtnLoading(sendVerifBtn, false);
   }
 });
 
-/* ============================================================
-   OTP — Verificación via Railway + Firebase Custom Token
-   ============================================================ */
+/* ══════════════════════════════════════════════
+   PASO 2 — Verificar OTP
+══════════════════════════════════════════════ */
 const otpBoxes        = Array.from(document.querySelectorAll('.otp-box'));
 const verifyBtn       = document.getElementById('verifyBtn');
 const resendBtn       = document.getElementById('resendBtn');
@@ -1072,433 +1125,462 @@ function startResendTimer(){
     }
   },1000);
 }
-resendBtn.addEventListener('click',()=>sendCodeBtn.click());
+resendBtn.addEventListener('click', ()=> sendVerifBtn.click());
 
 verifyBtn.addEventListener('click', async ()=>{
-  if(!pendingPhone) return;
-  setBtnLoading(verifyBtn,true);
+  if(!pendingRealEmail) return;
+  setBtnLoading(verifyBtn, true);
   try{
-    /* 1. Verificar OTP con Railway/Twilio */
-    const verifyRes = await fetch(`${RAILWAY_URL}/verify-otp`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({phone:pendingPhone, code:getOtpValue()})
-    });
-    const verifyData = await verifyRes.json();
-    if(!verifyRes.ok) throw new Error(verifyData.error||'Código incorrecto.');
+    const key = btoa(pendingRealEmail).replace(/[^a-zA-Z0-9]/g,'');
+    const snap = await get(ref(db, 'otp_verifications/' + key));
+    if(!snap.exists()) throw new Error('No hay código pendiente. Solicita uno nuevo.');
+    const { code, exp } = snap.val();
+    if(Date.now() > exp) throw new Error('El código expiró. Solicita uno nuevo.');
+    if(code !== getOtpValue()) throw new Error('Código incorrecto. Intenta de nuevo.');
 
-    /* 2. Obtener Firebase Custom Token desde Railway */
-    const tokenRes = await fetch(`${RAILWAY_URL}/firebase-token`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({phone:pendingPhone})
-    });
-    const tokenData = await tokenRes.json();
-    if(!tokenRes.ok) throw new Error(tokenData.error||'Error al crear sesión.');
-
-    /* 3. Iniciar sesión en Firebase con el custom token */
-    const result = await signInWithCustomToken(auth, tokenData.token);
-    currentUser = result.user;
+    // Código válido — eliminar de Firebase
+    await remove(ref(db, 'otp_verifications/' + key));
     clearInterval(resendInterval);
-    await routeAfterAuth();
+
+    // Iniciar sesión anónima en Firebase
+    const result = await signInAnonymously(auth);
+    currentUser = result.user;
+
+    // Ver si ya tiene perfil
+    const userSnap = await get(ref(db, 'baro_users/' + currentUser.uid));
+    if(userSnap.exists()){
+      currentUserData = userSnap.val();
+      enterApp();
+    } else {
+      // Mostrar pantalla de perfil
+      document.getElementById('nameInput').value = '';
+      document.getElementById('usernameInput').value = '';
+      document.getElementById('emailPreviewChip').style.display = 'none';
+      document.getElementById('profileAvatarPreview').textContent = 'B';
+      document.getElementById('profileAvatarPreview').style.background = pendingAvatarColor;
+      showScreen('profile');
+    }
   }catch(err){
     console.error(err);
-    showToast(err.message||'Código incorrecto. Intenta de nuevo.');
+    showToast(err.message || 'Error al verificar. Intenta de nuevo.');
   }finally{
-    setBtnLoading(verifyBtn,false);
+    setBtnLoading(verifyBtn, false);
   }
 });
 
-/* ============================================================
-   PERFIL
-   ============================================================ */
-const swatchRow          = document.getElementById('swatchRow');
+document.getElementById('backToEmail').addEventListener('click', ()=> showScreen('email'));
+
+/* ══════════════════════════════════════════════
+   PASO 3 — Perfil
+══════════════════════════════════════════════ */
+const swatchRow           = document.getElementById('swatchRow');
 const profileAvatarPreview = document.getElementById('profileAvatarPreview');
-const nameInput          = document.getElementById('nameInput');
-const profileContinueBtn = document.getElementById('profileContinueBtn');
+const nameInput           = document.getElementById('nameInput');
+const usernameInput       = document.getElementById('usernameInput');
+const profileContinueBtn  = document.getElementById('profileContinueBtn');
+const emailPreviewChip    = document.getElementById('emailPreviewChip');
+const emailPreviewText    = document.getElementById('emailPreviewText');
 
 AVATAR_COLORS.forEach((color,i)=>{
-  const sw=document.createElement('button');
-  sw.className='swatch'+(i===0?' selected':'');
-  sw.style.background=color;
-  sw.setAttribute('aria-label',`Color ${i+1}`);
-  sw.addEventListener('click',()=>{
-    pendingAvatarColor=color;
-    profileAvatarPreview.style.background=color;
+  const sw = document.createElement('button');
+  sw.className = 'swatch' + (i===0?' selected':'');
+  sw.style.background = color;
+  sw.setAttribute('aria-label', `Color ${i+1}`);
+  sw.addEventListener('click', ()=>{
+    pendingAvatarColor = color;
+    profileAvatarPreview.style.background = color;
     swatchRow.querySelectorAll('.swatch').forEach(s=>s.classList.remove('selected'));
     sw.classList.add('selected');
   });
   swatchRow.appendChild(sw);
 });
-profileAvatarPreview.style.background=pendingAvatarColor;
-nameInput.addEventListener('input',()=>{
-  const v=nameInput.value.trim();
-  profileAvatarPreview.textContent=v?initials(v):'N';
+profileAvatarPreview.style.background = pendingAvatarColor;
+
+nameInput.addEventListener('input', ()=>{
+  const v = nameInput.value.trim();
+  profileAvatarPreview.textContent = v ? initials(v) : 'B';
+});
+
+usernameInput.addEventListener('input', ()=>{
+  const u = usernameInput.value.trim().toLowerCase();
+  usernameInput.value = u.replace(/[^a-z0-9._-]/g,'');
+  if(u.length >= 3){
+    emailPreviewChip.style.display = 'inline-flex';
+    emailPreviewText.textContent = `${u}@${BARO_DOMAIN}`;
+  } else {
+    emailPreviewChip.style.display = 'none';
+  }
 });
 
 profileContinueBtn.addEventListener('click', async ()=>{
-  const name=nameInput.value.trim();
-  if(!name){ showToast('Cuéntanos cómo te llamas.'); return; }
-  setBtnLoading(profileContinueBtn,true);
+  const name     = nameInput.value.trim();
+  const username = usernameInput.value.trim().toLowerCase();
+
+  if(!name){ showToast('Escribe tu nombre completo.'); return; }
+  if(!isValidUsername(username)){
+    showToast('El usuario debe tener al menos 3 caracteres. Solo letras, números, puntos y guiones.');
+    return;
+  }
+
+  setBtnLoading(profileContinueBtn, true);
   try{
-    const userRef=ref(db,'users/'+currentUser.uid);
-    await set(userRef,{
-      uid:currentUser.uid,
-      phone:pendingPhone||currentUser.phoneNumber||'',
+    // Verificar que el username no esté tomado
+    const usernameSnap = await get(ref(db, 'baro_usernames/' + username));
+    if(usernameSnap.exists()){
+      showToast(`El usuario "${username}" ya está en uso. Elige otro.`);
+      return;
+    }
+
+    const baroEmail = `${username}@${BARO_DOMAIN}`;
+
+    await set(ref(db, 'baro_users/' + currentUser.uid), {
+      uid: currentUser.uid,
+      realEmail: pendingRealEmail || '',
+      baroEmail,
+      username,
       name,
-      avatarColor:pendingAvatarColor,
-      online:true,
-      createdAt:serverTimestamp(),
-      lastSeen:serverTimestamp()
+      avatarColor: pendingAvatarColor,
+      createdAt: serverTimestamp()
     });
-    currentUserData={name,avatarColor:pendingAvatarColor,phone:pendingPhone||''};
-    setupPresence(currentUser.uid);
+    // Reservar username
+    await set(ref(db, 'baro_usernames/' + username), currentUser.uid);
+
+    currentUserData = { uid: currentUser.uid, baroEmail, username, name, avatarColor: pendingAvatarColor };
     enterApp();
   }catch(err){
     console.error(err);
-    showToast('No pudimos guardar tu perfil. Intenta de nuevo.');
+    showToast('No se pudo crear el perfil. Intenta de nuevo.');
   }finally{
-    setBtnLoading(profileContinueBtn,false);
+    setBtnLoading(profileContinueBtn, false);
   }
 });
 
-/* ============================================================
-   FLUJO POST-AUTH
-   ============================================================ */
-async function routeAfterAuth(){
-  const userRef=ref(db,'users/'+currentUser.uid);
-  const snap=await get(userRef);
-  if(snap.exists()){
-    currentUserData=snap.val();
-    pendingAvatarColor=currentUserData.avatarColor||AVATAR_COLORS[0];
-    setupPresence(currentUser.uid);
-    enterApp();
-  }else{
-    nameInput.value='';
-    profileAvatarPreview.textContent='N';
-    profileAvatarPreview.style.background=pendingAvatarColor;
-    showScreen('profile');
-  }
+/* ══════════════════════════════════════════════
+   APP DE CORREO
+══════════════════════════════════════════════ */
+function enterApp(){
+  showScreen('mail');
+  document.getElementById('sidebarEmail').textContent = currentUserData.baroEmail;
+  document.getElementById('composeFrom').value = currentUserData.baroEmail;
+  setupPresence();
+  loadFolder('inbox');
 }
 
-function setupPresence(uid){
-  const connectedRef=ref(db,'.info/connected');
-  onValue(connectedRef,snap=>{
-    const dot =document.getElementById('connDot');
-    const text=document.getElementById('connText');
+function setupPresence(){
+  const connectedRef = ref(db, '.info/connected');
+  onValue(connectedRef, snap=>{
+    const dot  = document.getElementById('connDot');
+    const text = document.getElementById('connText');
     if(snap.val()===true){
-      const statusRef=ref(db,'users/'+uid);
-      onDisconnect(statusRef).update({online:false,lastSeen:serverTimestamp()}).then(()=>{
-        update(statusRef,{online:true});
-      });
       dot.classList.remove('off');
-      text.textContent='En tiempo real';
-    }else{
+      text.textContent = 'Conectado';
+    } else {
       dot.classList.add('off');
-      text.textContent='Reconectando…';
+      text.textContent = 'Reconectando…';
     }
   });
 }
 
-/* ============================================================
-   CHAT
-   ============================================================ */
-function enterApp(){
-  showScreen('chat');
-  loadContacts();
+/* ── CARPETAS ── */
+function loadFolder(folder){
+  activeFolder = folder;
+  activeMailId = null;
+  hideReadView();
+  hideComposeView();
+
+  // Actualizar nav activo
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.folder===folder);
+  });
+  document.getElementById('folderTitle').textContent =
+    folder === 'inbox' ? 'Bandeja de entrada' : 'Enviados';
+
+  if(mailListener){ off(mailListener); mailListener=null; }
+
+  const mailsRef = ref(db, 'baro_mails');
+  mailListener = mailsRef;
+  onValue(mailsRef, snap=>{
+    const all = snap.val() || {};
+    const items = Object.entries(all)
+      .map(([id,m])=>({id,...m}))
+      .filter(m=> folder==='inbox'
+        ? m.to === currentUserData.baroEmail
+        : m.from === currentUserData.baroEmail
+      )
+      .sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+
+    renderMailList(items);
+  });
 }
 
-function loadContacts(){
-  const usersRef=ref(db,'users');
-  onValue(usersRef,snap=>renderContacts(snap.val()||{}));
-}
+function renderMailList(items){
+  const scroll = document.getElementById('mailListScroll');
+  const unread = items.filter(m=> m.to===currentUserData.baroEmail && !m.read).length;
+  const badge  = document.getElementById('inboxBadge');
+  if(activeFolder==='inbox' && unread>0){
+    badge.style.display=''; badge.textContent=unread;
+  } else {
+    badge.style.display='none';
+  }
 
-let allContactsData={};
-let contactSearchTerm='';
-
-function renderContacts(data){
-  allContactsData=data;
-  const listEl=document.getElementById('contactList');
-  const entries=Object.entries(data).filter(([uid])=>uid!==currentUser.uid);
-  const f=contactSearchTerm.trim().toLowerCase();
-  const filtered=entries.filter(([,u])=>
-    (u.name||'').toLowerCase().includes(f)||(u.phone||'').includes(f)
-  );
-  if(filtered.length===0){
-    listEl.innerHTML='<div class="empty-contacts">Aún no hay otras personas registradas.<br>Comparte Message para empezar.</div>';
+  if(items.length===0){
+    scroll.innerHTML=`<div class="mail-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+      <p>${activeFolder==='inbox'?'Tu bandeja está vacía.':'No has enviado correos.'}</p>
+    </div>`;
     return;
   }
-  listEl.innerHTML='';
-  filtered
-    .sort((a,b)=>(a[1].name||'').localeCompare(b[1].name||''))
-    .forEach(([uid,u],i)=>{
-      const item=document.createElement('button');
-      item.className='contact-item'+(uid===activeChatUid?' active':'');
-      item.style.animationDelay=(Math.min(i,10)*0.018)+'s';
-      const statusText=u.online?'En línea':lastSeenText(u.lastSeen);
-      item.innerHTML=`
-        <div class="avatar-sm" style="background:${u.avatarColor||'#CC785C'}">
-          ${initials(u.name||'?')}
-          <span class="status-dot ${u.online?'online':''}"></span>
+
+  scroll.innerHTML='';
+  items.forEach((m,i)=>{
+    const isOut = activeFolder==='sent';
+    const displayName = isOut ? m.toName||m.to : m.fromName||m.from;
+    const isUnread = !isOut && !m.read;
+    const color = m.fromColor || '#CC785C';
+
+    const btn = document.createElement('button');
+    btn.className = 'mail-item' + (isUnread?' unread':'') + (m.id===activeMailId?' active':'');
+    btn.style.animationDelay = (Math.min(i,12)*0.02)+'s';
+    btn.innerHTML = `
+      <div class="mail-item-avatar" style="background:${color}">${initials(displayName||'?')}</div>
+      <div class="mail-item-body">
+        <div class="mail-item-top">
+          <span class="mail-item-from">${escapeHtml(displayName||'—')}</span>
+          <span class="mail-item-time">${formatDateTime(m.timestamp)}</span>
         </div>
-        <div class="contact-meta">
-          <div class="contact-top">
-            <span class="contact-name">${escapeHtml(u.name||'Usuario')}</span>
-          </div>
-          <div class="contact-sub">${escapeHtml(statusText)}</div>
-        </div>`;
-      item.addEventListener('click',()=>openChat(uid,u));
-      listEl.appendChild(item);
-    });
+        <div class="mail-item-subject">${escapeHtml(m.subject||'(sin asunto)')}</div>
+        <div class="mail-item-preview">${escapeHtml((m.body||'').substring(0,80))}</div>
+      </div>
+      ${isUnread?'<span class="unread-dot"></span>':''}
+    `;
+    btn.addEventListener('click',()=>openMail(m));
+    scroll.appendChild(btn);
+  });
 }
 
-document.getElementById('contactSearch').addEventListener('input',e=>{
-  contactSearchTerm=e.target.value;
-  renderContacts(allContactsData);
-});
+/* ── LEER CORREO ── */
+function openMail(m){
+  activeMailId = m.id;
+  document.getElementById('screen-mail').classList.add('mail-open');
+  hideComposeView();
+  showReadView(m);
 
-function chatIdFor(a,b){ return a<b?`${a}_${b}`:`${b}_${a}`; }
+  if(!m.read && m.to===currentUserData.baroEmail){
+    update(ref(db,'baro_mails/'+m.id),{read:true});
+  }
 
-function openChat(otherUid,otherData){
-  activeChatUid=otherUid;
-  activeChatId=chatIdFor(currentUser.uid,otherUid);
-
-  document.getElementById('chatEmptyState').style.display='none';
-  const chatActive=document.getElementById('chatActive');
-  chatActive.classList.add('visible');
-
-  document.getElementById('headerAvatar').style.background=otherData.avatarColor||'#CC785C';
-  document.getElementById('headerAvatar').textContent=initials(otherData.name||'?');
-  document.getElementById('headerName').textContent=otherData.name||'Usuario';
-  setHeaderStatus(otherData.online?'En línea':lastSeenText(otherData.lastSeen),false);
-
-  renderContacts(allContactsData);
-  document.getElementById('screen-chat').classList.add('chat-open');
-
-  if(msgListenerRef)    off(msgListenerRef);
-  if(typingListenerRef) off(typingListenerRef);
-
-  const msgsRef=ref(db,'chats/'+activeChatId+'/messages');
-  msgListenerRef=msgsRef;
-  onValue(msgsRef,snap=>{
-    const msgs=[];
-    snap.forEach(child=>msgs.push(child.val()));
-    renderMessages(msgs);
+  // Actualizar selección en lista
+  document.querySelectorAll('.mail-item').forEach(el=>{
+    el.classList.remove('active');
   });
+}
 
-  const typingRef=ref(db,'chats/'+activeChatId+'/typing/'+otherUid);
-  typingListenerRef=typingRef;
-  onValue(typingRef,snap=>{
-    const isTyping=!!snap.val();
-    if(isTyping){
-      setHeaderStatus('escribiendo…',true);
-    }else{
-      const latest=allContactsData[otherUid]||otherData;
-      setHeaderStatus(latest.online?'En línea':lastSeenText(latest.lastSeen),false);
+function showReadView(m){
+  document.getElementById('readEmpty').style.display='none';
+  const rv = document.getElementById('readView');
+  rv.style.display='flex';
+  rv.style.flexDirection='column';
+  rv.style.flex='1';
+  rv.style.overflow='hidden';
+
+  const displayName = m.fromName || m.from;
+  document.getElementById('readSubject').textContent = m.subject || '(sin asunto)';
+  document.getElementById('readAvatar').textContent = initials(displayName||'?');
+  document.getElementById('readAvatar').style.background = m.fromColor || '#CC785C';
+  document.getElementById('readFromName').textContent = displayName || '—';
+  document.getElementById('readFromAddr').textContent = m.from || '—';
+  document.getElementById('readTime').textContent = m.timestamp ? new Date(m.timestamp).toLocaleString('es-ES') : '—';
+  document.getElementById('readBody').textContent = m.body || '';
+
+  // Reply
+  document.getElementById('replyBtn').onclick = ()=> openCompose({ to: m.from, subject: `Re: ${m.subject||''}` });
+  // Delete
+  document.getElementById('deleteBtn').onclick = async ()=>{
+    if(confirm('¿Eliminar este correo?')){
+      await remove(ref(db,'baro_mails/'+m.id));
+      hideReadView();
+      document.getElementById('screen-mail').classList.remove('mail-open');
     }
-  });
+  };
 }
 
-function setHeaderStatus(text,isTyping){
-  const el=document.getElementById('headerStatus');
-  el.textContent=text;
-  el.classList.toggle('typing',isTyping);
+function hideReadView(){
+  document.getElementById('readEmpty').style.display='';
+  const rv = document.getElementById('readView');
+  rv.style.display='none';
 }
 
-function renderMessages(msgs){
-  const area=document.getElementById('messagesArea');
-  const wasAtBottom=area.scrollTop+area.clientHeight>=area.scrollHeight-40;
-  area.innerHTML='';
-  msgs.forEach(m=>{
-    const row=document.createElement('div');
-    row.className='msg-row '+(m.sender===currentUser.uid?'out':'in');
-    row.innerHTML=`<div class="msg-bubble">${escapeHtml(m.text)}<span class="msg-time">${formatTime(m.timestamp)}</span></div>`;
-    area.appendChild(row);
-  });
-  if(wasAtBottom||msgs.length<=1) area.scrollTop=area.scrollHeight;
+/* ── REDACTAR ── */
+function openCompose(prefill={}){
+  activeMailId = null;
+  document.getElementById('screen-mail').classList.add('mail-open');
+  hideReadView();
+  showComposeView(prefill);
 }
 
-document.getElementById('backToList').addEventListener('click',()=>{
-  document.getElementById('screen-chat').classList.remove('chat-open');
+function showComposeView(prefill={}){
+  document.getElementById('readEmpty').style.display='none';
+  const cv = document.getElementById('composeView');
+  cv.style.display='flex';
+  cv.style.flexDirection='column';
+  cv.style.flex='1';
+
+  document.getElementById('composeTo').value    = prefill.to      || '';
+  document.getElementById('composeSubject').value = prefill.subject || '';
+  document.getElementById('composeBody').value  = prefill.body    || '';
+  document.getElementById('composeTo').focus();
+}
+
+function hideComposeView(){
+  document.getElementById('readEmpty').style.display='';
+  document.getElementById('composeView').style.display='none';
+}
+
+/* ── ENVIAR CORREO ── */
+const sendMailBtn = document.getElementById('sendMailBtn');
+sendMailBtn.addEventListener('click', async ()=>{
+  const to      = document.getElementById('composeTo').value.trim().toLowerCase();
+  const subject = document.getElementById('composeSubject').value.trim();
+  const body    = document.getElementById('composeBody').value.trim();
+
+  if(!isValidEmail(to)){ showToast('Escribe una dirección de correo válida.'); return; }
+  if(!subject){ showToast('Escribe un asunto.'); return; }
+  if(!body){ showToast('El mensaje no puede estar vacío.'); return; }
+
+  setBtnLoading(sendMailBtn, true);
+  try{
+    // Verificar si el destinatario existe en Baro
+    let toName  = to;
+    let toColor = '#CC785C';
+    if(to.endsWith('@' + BARO_DOMAIN)){
+      const toUsername = to.replace('@'+BARO_DOMAIN,'');
+      const uidSnap = await get(ref(db,'baro_usernames/'+toUsername));
+      if(!uidSnap.exists()){
+        showToast(`No existe ningún usuario con la dirección ${to} en Baro.`);
+        return;
+      }
+      const toUid = uidSnap.val();
+      const toUserSnap = await get(ref(db,'baro_users/'+toUid));
+      if(toUserSnap.exists()){
+        const toUser = toUserSnap.val();
+        toName  = toUser.name || to;
+        toColor = toUser.avatarColor || '#CC785C';
+      }
+    }
+
+    await push(ref(db,'baro_mails'),{
+      from:      currentUserData.baroEmail,
+      fromName:  currentUserData.name,
+      fromColor: currentUserData.avatarColor,
+      to,
+      toName,
+      toColor,
+      subject,
+      body,
+      timestamp: Date.now(),
+      read: false
+    });
+
+    showToast('Correo enviado correctamente.', 'success');
+    hideComposeView();
+    document.getElementById('screen-mail').classList.remove('mail-open');
+    loadFolder('sent');
+  }catch(err){
+    console.error(err);
+    showToast('No se pudo enviar. Intenta de nuevo.');
+  }finally{
+    setBtnLoading(sendMailBtn, false);
+  }
 });
 
-/* ============================================================
-   MENSAJES
-   ============================================================ */
-const msgInput  =document.getElementById('msgInput');
-const sendMsgBtn=document.getElementById('sendMsgBtn');
-
-function sendMessage(){
-  const text=msgInput.value.trim();
-  if(!text||!activeChatId) return;
-  const msgsRef=ref(db,'chats/'+activeChatId+'/messages');
-  push(msgsRef,{sender:currentUser.uid,text,timestamp:Date.now()});
-  msgInput.value='';
-  msgInput.style.height='auto';
-  setTyping(false);
-}
-sendMsgBtn.addEventListener('click',sendMessage);
-msgInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMessage(); }
+/* ── NAVEGACIÓN ── */
+document.getElementById('composeNavBtn').addEventListener('click', ()=>{
+  document.getElementById('screen-mail').classList.add('sidebar-hidden');
+  openCompose();
 });
-msgInput.addEventListener('input',()=>{
-  msgInput.style.height='auto';
-  msgInput.style.height=Math.min(msgInput.scrollHeight,110)+'px';
-  if(!activeChatId) return;
-  setTyping(true);
-  clearTimeout(typingTimeout);
-  typingTimeout=setTimeout(()=>setTyping(false),1400);
+document.getElementById('navInbox').addEventListener('click', ()=>{
+  document.getElementById('screen-mail').classList.add('sidebar-hidden');
+  loadFolder('inbox');
+});
+document.getElementById('navSent').addEventListener('click', ()=>{
+  document.getElementById('screen-mail').classList.add('sidebar-hidden');
+  loadFolder('sent');
+});
+document.getElementById('backToSidebar').addEventListener('click', ()=>{
+  document.getElementById('screen-mail').classList.remove('sidebar-hidden');
+});
+document.getElementById('backToList').addEventListener('click', ()=>{
+  document.getElementById('screen-mail').classList.remove('mail-open');
+  hideReadView();
+});
+document.getElementById('backFromCompose').addEventListener('click', ()=>{
+  document.getElementById('screen-mail').classList.remove('mail-open');
+  hideComposeView();
+});
+document.getElementById('discardBtn').addEventListener('click', ()=>{
+  hideComposeView();
+  document.getElementById('screen-mail').classList.remove('mail-open');
 });
 
-function setTyping(isTyping){
-  if(!activeChatId||!currentUser) return;
-  update(ref(db,'chats/'+activeChatId+'/typing'),{[currentUser.uid]:isTyping});
-}
-
-/* ============================================================
-   TEMA Y MENÚ
-   ============================================================ */
-document.getElementById('themeToggle').addEventListener('click',()=>{
-  const root=document.documentElement;
-  root.setAttribute('data-theme',root.getAttribute('data-theme')==='light'?'dark':'light');
+/* ── TEMA Y MENÚ ── */
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  const root = document.documentElement;
+  root.setAttribute('data-theme', root.getAttribute('data-theme')==='light' ? '' : 'light');
 });
-const menuPop=document.getElementById('menuPop');
-document.getElementById('menuToggle').addEventListener('click',e=>{
+const menuPop = document.getElementById('menuPop');
+document.getElementById('menuToggle').addEventListener('click', e=>{
   e.stopPropagation();
   menuPop.classList.toggle('show');
 });
-document.addEventListener('click',()=>menuPop.classList.remove('show'));
+document.addEventListener('click', ()=> menuPop.classList.remove('show'));
 
 document.getElementById('logoutBtn').addEventListener('click', async ()=>{
   try{
-    if(currentUser){
-      await update(ref(db,'users/'+currentUser.uid),{online:false,lastSeen:serverTimestamp()});
-    }
+    if(mailListener){ off(mailListener); mailListener=null; }
     await signOut(auth);
   }catch(err){ console.error(err); }
-  currentUser=null; currentUserData=null; activeChatUid=null; activeChatId=null;
-  pendingPhone=null;
-  document.getElementById('screen-chat').classList.remove('chat-open');
-  document.getElementById('chatActive').classList.remove('visible');
-  document.getElementById('chatEmptyState').style.display='';
-  showScreen('country');
+  currentUser=null; currentUserData=null; pendingRealEmail=null;
+  pendingOtpCode=null; activeMailId=null;
+  document.getElementById('screen-mail').classList.remove('mail-open','sidebar-hidden');
+  showScreen('email');
 });
 
-/* ============================================================
+/* ══════════════════════════════════════════════
    ARRANQUE
-   ============================================================ */
-
-// Timeout de rescate: si Firebase tarda más de 5s en responder,
-// mostramos la pantalla de país para que el usuario no quede atascado.
+══════════════════════════════════════════════ */
 let authResolved = false;
 const rescueTimer = setTimeout(()=>{
   if(!authResolved){
-    authResolved = true;
-    showScreen('country');
+    authResolved=true;
+    showScreen('email');
   }
 }, 5000);
 
 onAuthStateChanged(auth, async user=>{
-  if(authResolved) return; // ya resolvimos (rescue o primer fire)
-  authResolved = true;
+  if(authResolved) return;
+  authResolved=true;
   clearTimeout(rescueTimer);
-
-  // Pequeña pausa para que el splash se vea al menos un momento
   await new Promise(r=>setTimeout(r,700));
 
   if(user){
-    currentUser = user;
+    currentUser=user;
     try{
-      await routeAfterAuth();
+      const snap = await get(ref(db,'baro_users/'+user.uid));
+      if(snap.exists()){
+        currentUserData=snap.val();
+        enterApp();
+      } else {
+        showScreen('email');
+      }
     }catch(err){
-      console.error('routeAfterAuth error:',err);
-      showScreen('country');
+      console.error(err);
+      showScreen('email');
     }
-  }else{
-    showScreen('country');
-  }
-}, err=>{
-  // onAuthStateChanged también puede recibir un error como segundo argumento
-  console.error('Firebase Auth error:',err);
-  if(!authResolved){
-    authResolved = true;
-    clearTimeout(rescueTimer);
-    showScreen('country');
+  } else {
+    showScreen('email');
   }
 });
 </script>
 
-<!--
-  ================================================================
-  📖 README — Servidor Railway (Node.js + Twilio + Firebase Admin)
-  ================================================================
-
-  Crea un proyecto Node.js en Railway con estas dependencias:
-    npm install express twilio firebase-admin cors dotenv
-
-  Variables de entorno en Railway:
-    TWILIO_ACCOUNT_SID=ACxxxxxxx
-    TWILIO_AUTH_TOKEN=xxxxxxx
-    TWILIO_PHONE=+1234567890          ← tu número Twilio
-    FIREBASE_PROJECT_ID=ggggg-f2508
-    FIREBASE_CLIENT_EMAIL=...         ← service account
-    FIREBASE_PRIVATE_KEY=...          ← service account key
-    PORT=3000
-
-  Código del servidor (server.js):
-  ─────────────────────────────────
-  require('dotenv').config();
-  const express = require('express');
-  const cors    = require('cors');
-  const twilio  = require('twilio');
-  const admin   = require('firebase-admin');
-  const app     = express();
-  app.use(cors(), express.json());
-
-  admin.initializeApp({ credential: admin.credential.cert({
-    projectId:   process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey:  process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g,'\n')
-  })});
-
-  const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-  const otpStore = new Map(); // en producción usa Redis
-
-  app.post('/send-otp', async (req,res)=>{
-    const { phone } = req.body;
-    if(!phone) return res.status(400).json({error:'phone requerido'});
-    const code = Math.floor(100000+Math.random()*900000).toString();
-    otpStore.set(phone, { code, exp: Date.now()+300000 });
-    try {
-      await twilioClient.messages.create({
-        body: `Tu código Message by Drex: ${code}`,
-        from: process.env.TWILIO_PHONE,
-        to:   phone
-      });
-      res.json({ok:true});
-    } catch(e) { res.status(500).json({error:e.message}); }
-  });
-
-  app.post('/verify-otp', (req,res)=>{
-    const { phone, code } = req.body;
-    const entry = otpStore.get(phone);
-    if(!entry||Date.now()>entry.exp||entry.code!==code)
-      return res.status(400).json({error:'Código incorrecto o vencido.'});
-    otpStore.delete(phone);
-    res.json({ok:true});
-  });
-
-  app.post('/firebase-token', async (req,res)=>{
-    const { phone } = req.body;
-    try {
-      const uid   = 'phone_'+phone.replace(/\D/g,'');
-      const token = await admin.auth().createCustomToken(uid, { phone });
-      res.json({ token });
-    } catch(e) { res.status(500).json({error:e.message}); }
-  });
-
-  app.listen(process.env.PORT||3000, ()=>console.log('🚂 Railway server listo'));
-  ================================================================
--->
 </body>
 </html>
