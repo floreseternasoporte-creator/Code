@@ -1348,18 +1348,21 @@ loadFolder=function(folder){
 function showShareLink(){
   if(!currentUserData) return;
   const link=window.location.origin+window.location.pathname+'?user='+currentUserData.username;
-  const msg=`📬 Tu enlace público para recibir correos:\n\n${link}\n\nComparte este enlace con cualquiera. Las personas podrán enviarte correos desde cualquier plataforma y te llegarán directamente a tu bandeja de entrada de Baro.`;
+  const realEmail=currentUserData.username+'@mail.'+BARO_DOMAIN;
+  const msg=`📬 Formas de que te envíen correos:\n\n`+
+    `1️⃣ Formulario web (fácil, no necesitan cuenta):\n${link}\n\n`+
+    `2️⃣ Correo real (desde Gmail, Outlook, etc.):\n${realEmail}\n\n`+
+    `💡 Toca para copiar el enlace del formulario.`;
   
-  // Intentar copiar al portapapeles
+  // Intentar copiar el enlace al portapapeles
   if(navigator.clipboard){
     navigator.clipboard.writeText(link).then(()=>{
       showToast('🔗 Enlace copiado al portapapeles.','success');
     }).catch(()=>{});
   }
   
-  // Mostrar en un toast largo o alerta
   setTimeout(()=>{
-    alert('📬 Tu enlace público para recibir correos:\n\n'+link+'\n\nComparte este enlace con cualquiera. Las personas podrán enviarte correos desde cualquier plataforma y te llegarán directamente a tu bandeja de entrada.');
+    alert(msg);
   },100);
 }
 
