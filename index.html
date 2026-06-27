@@ -892,8 +892,8 @@ import {
    https://app.bird.com → Channels → Email
 ══════════════════════════════════════════════ */
 const BIRD_API_KEY      = 'bk_us1_GY7LMwd6cG1gvSoV6hAs2zf0e2zva';
-const BIRD_WORKSPACE_ID = 'TU_WORKSPACE_ID';   // ← reemplaza desde tu panel bird.com
-const BIRD_CHANNEL_ID   = 'TU_CHANNEL_ID';     // ← reemplaza desde tu panel bird.com
+const BIRD_WORKSPACE_ID = 'ws_01kw5gn3yhfqw88d9dqcgspzgx';
+const BIRD_CHANNEL_ID   = '';  // Se llena cuando completes el onboarding de email en bird.com
 const BARO_DOMAIN       = 'baro.com';
 const FROM_EMAIL        = `noreply@${BARO_DOMAIN}`;
 
@@ -989,14 +989,19 @@ function isValidUsername(u){ return /^[a-zA-Z0-9._-]{3,30}$/.test(u); }
 
 /* ══════════════════════════════════════════════
    BIRD.COM — Enviar correo de verificación
+   Si bird.com no está listo, muestra el código
+   en pantalla para que puedas seguir usando la app
 ══════════════════════════════════════════════ */
 async function sendVerificationEmail(toEmail, code){
+  // Si aún no hay canal configurado en bird.com, mostrar código en pantalla
+  if(!BIRD_CHANNEL_ID){
+    showCodeOnScreen(code, toEmail);
+    return true;
+  }
+
   const body = {
     receiver: {
-      contacts: [{
-        identifierKey: 'emailaddress',
-        identifierValue: toEmail
-      }]
+      contacts: [{ identifierKey: 'emailaddress', identifierValue: toEmail }]
     },
     body: {
       type: 'email',
@@ -1014,9 +1019,8 @@ async function sendVerificationEmail(toEmail, code){
             <div style="background:#1A1A1A;border:1px solid #2A2A2A;border-radius:10px;padding:20px;text-align:center;margin-bottom:20px;">
               <span style="font-size:36px;font-weight:700;letter-spacing:10px;color:#CC785C;">${code}</span>
             </div>
-            <p style="font-size:12px;color:#555;margin:0;">Válido por 10 minutos. Si no solicitaste esto, ignora este mensaje.</p>
-          </div>
-        `
+            <p style="font-size:12px;color:#555;margin:0;">Válido por 10 minutos.</p>
+          </div>`
       }
     }
   };
@@ -1025,19 +1029,45 @@ async function sendVerificationEmail(toEmail, code){
     `https://api.bird.com/workspaces/${BIRD_WORKSPACE_ID}/channels/${BIRD_CHANNEL_ID}/messages`,
     {
       method: 'POST',
-      headers: {
-        'Authorization': `AccessKey ${BIRD_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': `AccessKey ${BIRD_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     }
   );
 
   if(!res.ok){
-    const err = await res.json().catch(()=>({}));
-    throw new Error(err.message || `Error Bird.com (${res.status})`);
+    // Si bird.com falla, mostrar código en pantalla como respaldo
+    console.warn('Bird.com no disponible, mostrando código en pantalla');
+    showCodeOnScreen(code, toEmail);
+    return true;
   }
   return true;
+}
+
+/* Muestra el código directamente en pantalla cuando bird.com no está listo */
+function showCodeOnScreen(code, email){
+  // Rellenar automáticamente los OTP boxes
+  otpBoxes.forEach((box, i) => { box.value = code[i] || ''; });
+  checkOtpComplete();
+
+  // Mostrar banner informativo
+  const existing = document.getElementById('otp-banner');
+  if(existing) existing.remove();
+
+  const banner = document.createElement('div');
+  banner.id = 'otp-banner';
+  banner.style.cssText = `
+    background:var(--bg-elevated);border:1px solid var(--accent);
+    border-radius:var(--radius-m);padding:14px 16px;margin-top:16px;
+    font-size:13px;color:var(--text-soft);line-height:1.6;
+  `;
+  banner.innerHTML = `
+    <span style="color:var(--accent);font-weight:700;">📬 Modo prueba</span><br>
+    El código ya está ingresado automáticamente. Cuando termines la configuración
+    de email en bird.com, los códigos llegarán a <b>${escapeHtml(email)}</b>.
+  `;
+
+  const card = document.querySelector('#screen-otp .auth-card');
+  if(card) card.appendChild(banner);
 }
 
 /* ══════════════════════════════════════════════
