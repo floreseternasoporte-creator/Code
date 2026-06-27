@@ -235,64 +235,7 @@
     position:absolute;left:15px;top:50%;transform:translateY(-50%);
     width:18px;height:18px;color:var(--text-faint);
   }
-  .country-list{
-    display:flex;flex-direction:column;gap:2px;
-  }
-  .country-item{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 10px;
-    border-radius:var(--radius-s);
-    cursor:pointer;
-    border:none;background:none;width:100%;text-align:left;
-    transition:background .15s, transform .1s;
-    animation:fadeSlideUp .35s ease both;
-  }
-  .country-item:hover{background:var(--accent-soft);}
-  .country-item:active{transform:scale(.98);}
-  .country-flag{font-size:24px;line-height:1;}
-  .country-name{flex:1;font-size:15px;font-weight:500;}
-  .country-dial{font-size:14px;color:var(--text-faint);font-weight:500;}
 
-  /* ---------- Teléfono ---------- */
-  .country-chip{
-    display:flex;align-items:center;gap:10px;
-    padding:14px 16px;
-    border:1.5px solid var(--border);
-    border-radius:var(--radius-m);
-    background:var(--bg-soft);
-    cursor:pointer;
-    margin-bottom:14px;
-    transition:border-color .2s;
-  }
-  .country-chip:hover{border-color:var(--accent);}
-  .country-chip .country-flag{font-size:22px;}
-  .country-chip .ccname{flex:1;font-size:15px;font-weight:600;}
-  .country-chip svg{width:16px;height:16px;color:var(--text-faint);}
-
-  .phone-input-row{
-    display:flex;
-    align-items:stretch;
-    border:1.5px solid var(--border);
-    border-radius:var(--radius-m);
-    overflow:hidden;
-    transition:border-color .2s, box-shadow .2s;
-  }
-  .phone-input-row:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);}
-  .phone-dial{
-    display:flex;align-items:center;
-    padding:0 14px;
-    font-weight:600;
-    color:var(--text-soft);
-    background:var(--bg-soft);
-    border-right:1.5px solid var(--border);
-    font-size:15px;
-    white-space:nowrap;
-  }
-  .phone-input-row input{
-    flex:1;border:none;outline:none;background:var(--bg-elevated);
-    padding:0 14px;font-size:16px;height:52px;color:var(--text);
-    letter-spacing:.02em;
-  }
   .hint{font-size:13px;color:var(--text-faint);margin-top:10px;line-height:1.5;}
 
   .btn-primary{
@@ -331,20 +274,6 @@
   }
   .link-btn:disabled{color:var(--text-faint);cursor:not-allowed;}
 
-  /* ---------- OTP ---------- */
-  .otp-row{display:flex;gap:10px;justify-content:space-between;}
-  .otp-box{
-    width:48px;height:58px;
-    text-align:center;
-    font-size:22px;
-    font-weight:700;
-    border:1.5px solid var(--border);
-    border-radius:var(--radius-s);
-    background:var(--bg-elevated);
-    color:var(--text);
-    transition:border-color .15s, box-shadow .15s, transform .15s;
-  }
-  .otp-box:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);outline:none;transform:translateY(-2px);}
   .resend-row{
     display:flex;justify-content:center;margin-top:22px;font-size:14px;color:var(--text-faint);
   }
@@ -539,8 +468,6 @@
   .menu-item:hover{background:var(--accent-soft);}
   .menu-item svg{width:16px;height:16px;color:var(--text-soft);}
 
-  #recaptcha-container{position:fixed;bottom:-100px;left:-100px;}
-
   /* Responsive: chat móvil */
   @media (max-width:880px){
     .chat-sidebar{position:absolute;inset:0;width:100%;z-index:2;transition:transform .42s cubic-bezier(.22,.61,.36,1);}
@@ -581,86 +508,43 @@
     <div class="splash-tag">Conectando en tiempo real <span class="dot-flow"><span>.</span><span>.</span><span>.</span></span></div>
   </div>
 
-  <!-- ============ PAÍS ============ -->
-  <div class="screen" id="screen-country">
+  <!-- ============ CORREO ============ -->
+  <div class="screen" id="screen-email">
     <div class="topbar"><div style="width:40px"></div></div>
     <div class="auth-wrap">
       <div class="auth-card">
-        <p class="eyebrow">Paso 1 de 3</p>
-        <h1 class="title">Selecciona tu país</h1>
-        <p class="subtitle">Usaremos esto para darte el formato correcto de tu número de teléfono.</p>
-        <div class="search-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-          <input id="countrySearch" type="text" placeholder="Buscar país o código..." autocomplete="off" />
-        </div>
-        <div class="country-list" id="countryList"></div>
-      </div>
-    </div>
-  </div>
+        <p class="eyebrow">Paso 1 de 2</p>
+        <h1 class="title">Ingresa con tu correo</h1>
+        <p class="subtitle">Te enviaremos un enlace de acceso. Sin contraseñas, sin SMS.</p>
 
-  <!-- ============ TELÉFONO ============ -->
-  <div class="screen" id="screen-phone">
-    <div class="topbar">
-      <button class="icon-btn" id="backToCountry" aria-label="Volver">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-    </div>
-    <div class="auth-wrap">
-      <div class="auth-card">
-        <p class="eyebrow">Paso 2 de 3</p>
-        <h1 class="title">Tu número de teléfono</h1>
-        <p class="subtitle">Te enviaremos un código de verificación por SMS a tu número real.</p>
+        <label class="field-label" for="emailInput">Correo electrónico</label>
+        <input class="text-input" id="emailInput" type="email" placeholder="tu@correo.com" autocomplete="email" />
+        <p class="hint">Abre el enlace que recibas desde el mismo dispositivo y navegador.</p>
 
-        <button class="country-chip" id="countryChip">
-          <span class="country-flag" id="chipFlag">🌎</span>
-          <span class="ccname" id="chipName">Elige un país</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-
-        <div class="phone-input-row">
-          <div class="phone-dial" id="dialPrefix">+--</div>
-          <input id="phoneInput" type="tel" inputmode="numeric" placeholder="55 1234 5678" autocomplete="off" />
-        </div>
-        <p class="hint">Sin espacios extra ni el 0 inicial. Ej. si tu país usa +52, escribe solo los dígitos del número.</p>
-
-        <button class="btn-primary" id="sendCodeBtn">
-          <span class="label">Enviar código</span>
+        <button class="btn-primary" id="sendLinkBtn">
+          <span class="label">Enviar enlace de acceso</span>
           <span class="spinner"></span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ============ OTP ============ -->
-  <div class="screen" id="screen-otp">
+  <!-- ============ REVISA TU CORREO ============ -->
+  <div class="screen" id="screen-check-email">
     <div class="topbar">
-      <button class="icon-btn" id="backToPhone" aria-label="Volver">
+      <button class="icon-btn" id="backToEmail" aria-label="Volver">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
     </div>
     <div class="auth-wrap">
       <div class="auth-card">
-        <p class="eyebrow">Paso 3 de 3</p>
-        <h1 class="title">Verifica tu número</h1>
-        <p class="subtitle">Enviamos un código de 6 dígitos a <b id="otpPhoneLabel">tu número</b>.</p>
-
-        <div class="otp-row">
-          <input class="otp-box" maxlength="1" inputmode="numeric" />
-          <input class="otp-box" maxlength="1" inputmode="numeric" />
-          <input class="otp-box" maxlength="1" inputmode="numeric" />
-          <input class="otp-box" maxlength="1" inputmode="numeric" />
-          <input class="otp-box" maxlength="1" inputmode="numeric" />
-          <input class="otp-box" maxlength="1" inputmode="numeric" />
-        </div>
-
-        <button class="btn-primary" id="verifyBtn" disabled>
-          <span class="label">Verificar código</span>
-          <span class="spinner"></span>
-        </button>
+        <p class="eyebrow">Paso 2 de 2</p>
+        <h1 class="title">Revisa tu correo</h1>
+        <p class="subtitle">Enviamos un enlace de acceso a <b id="sentEmailLabel">tu correo</b>. Ábrelo desde este mismo dispositivo para continuar.</p>
 
         <div class="resend-row">
-          <span id="resendTimerText">Reenviar código en 0:60</span>
-          <button class="link-btn" id="resendBtn" style="display:none">Reenviar código</button>
+          <span id="resendTimerText">Reenviar enlace en 0:60</span>
+          <button class="link-btn" id="resendLinkBtn" style="display:none">Reenviar enlace</button>
         </div>
       </div>
     </div>
@@ -766,12 +650,10 @@
 
 </div>
 
-<div id="recaptcha-container"></div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged, signOut
+  getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getDatabase, ref, set, get, update, push, onValue, off, serverTimestamp, onDisconnect
@@ -792,54 +674,10 @@ const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getDatabase(fbApp);
 
-/* ============ DATOS DE PAÍSES ============ */
-const COUNTRIES = [
-  {name:'México', dial:'52', iso:'MX'},{name:'Colombia', dial:'57', iso:'CO'},
-  {name:'Argentina', dial:'54', iso:'AR'},{name:'Venezuela', dial:'58', iso:'VE'},
-  {name:'Chile', dial:'56', iso:'CL'},{name:'Perú', dial:'51', iso:'PE'},
-  {name:'Ecuador', dial:'593', iso:'EC'},{name:'Bolivia', dial:'591', iso:'BO'},
-  {name:'Paraguay', dial:'595', iso:'PY'},{name:'Uruguay', dial:'598', iso:'UY'},
-  {name:'Brasil', dial:'55', iso:'BR'},{name:'Cuba', dial:'53', iso:'CU'},
-  {name:'República Dominicana', dial:'1', iso:'DO'},{name:'Guatemala', dial:'502', iso:'GT'},
-  {name:'Honduras', dial:'504', iso:'HN'},{name:'El Salvador', dial:'503', iso:'SV'},
-  {name:'Nicaragua', dial:'505', iso:'NI'},{name:'Costa Rica', dial:'506', iso:'CR'},
-  {name:'Panamá', dial:'507', iso:'PA'},{name:'Puerto Rico', dial:'1', iso:'PR'},
-  {name:'España', dial:'34', iso:'ES'},{name:'Estados Unidos', dial:'1', iso:'US'},
-  {name:'Canadá', dial:'1', iso:'CA'},{name:'Reino Unido', dial:'44', iso:'GB'},
-  {name:'Francia', dial:'33', iso:'FR'},{name:'Alemania', dial:'49', iso:'DE'},
-  {name:'Italia', dial:'39', iso:'IT'},{name:'Portugal', dial:'351', iso:'PT'},
-  {name:'Países Bajos', dial:'31', iso:'NL'},{name:'Bélgica', dial:'32', iso:'BE'},
-  {name:'Suiza', dial:'41', iso:'CH'},{name:'Austria', dial:'43', iso:'AT'},
-  {name:'Suecia', dial:'46', iso:'SE'},{name:'Noruega', dial:'47', iso:'NO'},
-  {name:'Dinamarca', dial:'45', iso:'DK'},{name:'Finlandia', dial:'358', iso:'FI'},
-  {name:'Polonia', dial:'48', iso:'PL'},{name:'Rusia', dial:'7', iso:'RU'},
-  {name:'Ucrania', dial:'380', iso:'UA'},{name:'Grecia', dial:'30', iso:'GR'},
-  {name:'Irlanda', dial:'353', iso:'IE'},{name:'Rumania', dial:'40', iso:'RO'},
-  {name:'Hungría', dial:'36', iso:'HU'},{name:'República Checa', dial:'420', iso:'CZ'},
-  {name:'Turquía', dial:'90', iso:'TR'},{name:'China', dial:'86', iso:'CN'},
-  {name:'Japón', dial:'81', iso:'JP'},{name:'Corea del Sur', dial:'82', iso:'KR'},
-  {name:'India', dial:'91', iso:'IN'},{name:'Indonesia', dial:'62', iso:'ID'},
-  {name:'Filipinas', dial:'63', iso:'PH'},{name:'Vietnam', dial:'84', iso:'VN'},
-  {name:'Tailandia', dial:'66', iso:'TH'},{name:'Malasia', dial:'60', iso:'MY'},
-  {name:'Singapur', dial:'65', iso:'SG'},{name:'Pakistán', dial:'92', iso:'PK'},
-  {name:'Bangladés', dial:'880', iso:'BD'},{name:'Arabia Saudita', dial:'966', iso:'SA'},
-  {name:'Emiratos Árabes Unidos', dial:'971', iso:'AE'},{name:'Israel', dial:'972', iso:'IL'},
-  {name:'Catar', dial:'974', iso:'QA'},{name:'Egipto', dial:'20', iso:'EG'},
-  {name:'Nigeria', dial:'234', iso:'NG'},{name:'Sudáfrica', dial:'27', iso:'ZA'},
-  {name:'Marruecos', dial:'212', iso:'MA'},{name:'Kenia', dial:'254', iso:'KE'},
-  {name:'Argelia', dial:'213', iso:'DZ'},{name:'Australia', dial:'61', iso:'AU'},
-  {name:'Nueva Zelanda', dial:'64', iso:'NZ'}
-].sort((a,b)=>a.name.localeCompare(b.name,'es'));
-
-function flagEmoji(iso){
-  return iso.toUpperCase().replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt(0)));
-}
-
 const AVATAR_COLORS = ['#c15f3c','#5b8a72','#b8893f','#9c5b6e','#6b7a8f','#7c6a9c','#3f7a6e','#8a6a4a'];
 
 /* ============ ESTADO ============ */
-let selectedCountry = null;
-let confirmationResult = null;
+let pendingEmail = localStorage.getItem('pendingEmail') || '';
 let currentUser = null;
 let currentUserData = null;
 let activeChatUid = null;
@@ -850,7 +688,7 @@ let typingTimeout = null;
 let pendingAvatarColor = AVATAR_COLORS[0];
 let resendInterval = null;
 
-const SCREEN_ORDER = ['splash','country','phone','otp','profile','chat'];
+const SCREEN_ORDER = ['splash','email','check-email','profile','chat'];
 
 function showScreen(id){
   const idx = SCREEN_ORDER.indexOf(id);
@@ -884,156 +722,104 @@ function setBtnLoading(btn, loading){
 function friendlyAuthError(err){
   const code = err && err.code ? err.code : '';
   const map = {
-    'auth/invalid-phone-number':'Ese número no parece válido. Revísalo e intenta de nuevo.',
+    'auth/invalid-email':'Ese correo no parece válido. Revísalo e intenta de nuevo.',
     'auth/too-many-requests':'Demasiados intentos. Espera un momento antes de volver a intentar.',
-    'auth/quota-exceeded':'Se alcanzó el límite de SMS del proyecto por ahora.',
-    'auth/invalid-verification-code':'El código no es correcto. Verifica los 6 dígitos.',
-    'auth/invalid-app-credential':'Falta configurar reCAPTCHA/App Check para este dominio en Firebase.',
-    'auth/billing-not-enabled':'La verificación por SMS requiere el plan de pago (Blaze) en Firebase.',
     'auth/unauthorized-domain':'Este dominio no está autorizado en Firebase Authentication.',
-    'auth/captcha-check-failed':'Falló la verificación de reCAPTCHA. Revisa la configuración del dominio.',
-    'auth/missing-app-credential':'Falta configurar reCAPTCHA/App Check para este dominio en Firebase.',
-    'auth/code-expired':'El código ya venció. Solicita uno nuevo.',
+    'auth/invalid-action-code':'Este enlace ya se usó o venció. Solicita uno nuevo.',
+    'auth/expired-action-code':'Este enlace venció. Solicita uno nuevo.',
     'auth/network-request-failed':'Sin conexión. Revisa tu internet e intenta otra vez.'
   };
-  const base = map[code] || 'Ocurrió un problema al enviar el código.';
+  const base = map[code] || 'Ocurrió un problema al enviar el enlace.';
   return code ? `${base} (código: ${code})` : base;
 }
 
-/* ============ PAÍSES ============ */
-const countryListEl = document.getElementById('countryList');
-function renderCountries(filter=''){
-  const f = filter.trim().toLowerCase();
-  const filtered = COUNTRIES.filter(c =>
-    c.name.toLowerCase().includes(f) || c.dial.includes(f.replace('+',''))
-  );
-  countryListEl.innerHTML = '';
-  filtered.forEach((c,i)=>{
-    const btn = document.createElement('button');
-    btn.className = 'country-item';
-    btn.style.animationDelay = (Math.min(i,12)*0.02)+'s';
-    btn.innerHTML = `<span class="country-flag">${flagEmoji(c.iso)}</span><span class="country-name">${c.name}</span><span class="country-dial">+${c.dial}</span>`;
-    btn.addEventListener('click', ()=> selectCountry(c));
-    countryListEl.appendChild(btn);
-  });
-  if(filtered.length===0){
-    countryListEl.innerHTML = '<div class="empty-contacts">No encontramos ese país.</div>';
-  }
-}
-renderCountries();
-document.getElementById('countrySearch').addEventListener('input', e=>renderCountries(e.target.value));
+/* ============ CORREO: ENVIAR ENLACE ============ */
+const emailInput = document.getElementById('emailInput');
+const sendLinkBtn = document.getElementById('sendLinkBtn');
+const resendLinkBtn = document.getElementById('resendLinkBtn');
+const resendTimerText = document.getElementById('resendTimerText');
 
-function selectCountry(c){
-  selectedCountry = c;
-  document.getElementById('chipFlag').textContent = flagEmoji(c.iso);
-  document.getElementById('chipName').textContent = c.name;
-  document.getElementById('dialPrefix').textContent = '+'+c.dial;
-  showScreen('phone');
-}
-document.getElementById('countryChip').addEventListener('click', ()=>showScreen('country'));
-document.getElementById('backToCountry').addEventListener('click', ()=>showScreen('country'));
-document.getElementById('backToPhone').addEventListener('click', ()=>showScreen('phone'));
+const actionCodeSettings = {
+  url: window.location.href.split('#')[0],
+  handleCodeInApp: true
+};
 
-/* ============ RECAPTCHA + ENVÍO DE CÓDIGO ============ */
-let recaptchaVerifier = null;
-function ensureRecaptcha(){
-  if(recaptchaVerifier) return recaptchaVerifier;
-  recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size:'invisible' });
-  return recaptchaVerifier;
+async function sendMagicLink(email){
+  await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+  pendingEmail = email;
+  localStorage.setItem('pendingEmail', email);
+  document.getElementById('sentEmailLabel').textContent = email;
+  showScreen('check-email');
+  startResendTimer();
 }
 
-const phoneInput = document.getElementById('phoneInput');
-const sendCodeBtn = document.getElementById('sendCodeBtn');
-
-sendCodeBtn.addEventListener('click', async ()=>{
-  if(!selectedCountry){ showToast('Primero elige un país.'); showScreen('country'); return; }
-  const digits = phoneInput.value.replace(/\D/g,'');
-  if(digits.length<6){ showToast('Escribe un número de teléfono válido.'); return; }
-  const fullPhone = '+'+selectedCountry.dial+digits;
-  setBtnLoading(sendCodeBtn, true);
+sendLinkBtn.addEventListener('click', async ()=>{
+  const email = emailInput.value.trim();
+  if(!email || !email.includes('@')){ showToast('Escribe un correo válido.'); return; }
+  setBtnLoading(sendLinkBtn, true);
   try{
-    const verifier = ensureRecaptcha();
-    confirmationResult = await signInWithPhoneNumber(auth, fullPhone, verifier);
-    document.getElementById('otpPhoneLabel').textContent = fullPhone;
-    resetOtpBoxes();
-    showScreen('otp');
-    startResendTimer();
+    await sendMagicLink(email);
   }catch(err){
     console.error(err);
     showToast(friendlyAuthError(err));
-    if(recaptchaVerifier){ try{ recaptchaVerifier.clear(); }catch(e){} recaptchaVerifier=null; }
   }finally{
-    setBtnLoading(sendCodeBtn, false);
+    setBtnLoading(sendLinkBtn, false);
   }
 });
 
-/* ============ OTP ============ */
-const otpBoxes = Array.from(document.querySelectorAll('.otp-box'));
-const verifyBtn = document.getElementById('verifyBtn');
-const resendBtn = document.getElementById('resendBtn');
-const resendTimerText = document.getElementById('resendTimerText');
-
-function resetOtpBoxes(){
-  otpBoxes.forEach(b=>b.value='');
-  otpBoxes[0].focus();
-  checkOtpComplete();
-}
-otpBoxes.forEach((box, idx)=>{
-  box.addEventListener('input', e=>{
-    e.target.value = e.target.value.replace(/\D/g,'').slice(0,1);
-    if(e.target.value && idx<otpBoxes.length-1) otpBoxes[idx+1].focus();
-    checkOtpComplete();
-  });
-  box.addEventListener('keydown', e=>{
-    if(e.key==='Backspace' && !e.target.value && idx>0) otpBoxes[idx-1].focus();
-  });
-  box.addEventListener('paste', e=>{
-    const text = (e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6);
-    if(text.length){
-      e.preventDefault();
-      text.split('').forEach((d,i)=>{ if(otpBoxes[i]) otpBoxes[i].value=d; });
-      otpBoxes[Math.min(text.length,6)-1].focus();
-      checkOtpComplete();
-    }
-  });
-});
-function checkOtpComplete(){
-  verifyBtn.disabled = otpBoxes.some(b=>!b.value);
-}
-function getOtpValue(){ return otpBoxes.map(b=>b.value).join(''); }
+document.getElementById('backToEmail').addEventListener('click', ()=>showScreen('email'));
 
 function startResendTimer(){
   let s = 60;
-  resendBtn.style.display='none';
+  resendLinkBtn.style.display='none';
   resendTimerText.style.display='inline';
   clearInterval(resendInterval);
   resendInterval = setInterval(()=>{
     s--;
-    resendTimerText.textContent = `Reenviar código en 0:${String(s).padStart(2,'0')}`;
+    resendTimerText.textContent = `Reenviar enlace en 0:${String(s).padStart(2,'0')}`;
     if(s<=0){
       clearInterval(resendInterval);
       resendTimerText.style.display='none';
-      resendBtn.style.display='inline';
+      resendLinkBtn.style.display='inline';
     }
   },1000);
 }
-resendBtn.addEventListener('click', ()=> sendCodeBtn.click());
-
-verifyBtn.addEventListener('click', async ()=>{
-  if(!confirmationResult) return;
-  setBtnLoading(verifyBtn, true);
+resendLinkBtn.addEventListener('click', async ()=>{
+  if(!pendingEmail) return;
+  resendLinkBtn.disabled = true;
   try{
-    const result = await confirmationResult.confirm(getOtpValue());
-    currentUser = result.user;
-    clearInterval(resendInterval);
-    await routeAfterAuth();
+    await sendMagicLink(pendingEmail);
+    showToast('Enlace reenviado.', 'success');
   }catch(err){
     console.error(err);
     showToast(friendlyAuthError(err));
   }finally{
-    setBtnLoading(verifyBtn, false);
+    resendLinkBtn.disabled = false;
   }
 });
+
+/* ============ CORREO: CONFIRMAR ENLACE AL VOLVER ============ */
+async function handleEmailLinkIfPresent(){
+  if(!isSignInWithEmailLink(auth, window.location.href)) return false;
+  let email = pendingEmail;
+  if(!email){
+    email = window.prompt('Confirma tu correo para terminar de ingresar:');
+  }
+  if(!email) return false;
+  try{
+    const result = await signInWithEmailLink(auth, email, window.location.href);
+    currentUser = result.user;
+    localStorage.removeItem('pendingEmail');
+    history.replaceState(null, '', window.location.pathname);
+    clearInterval(resendInterval);
+    await routeAfterAuth();
+    return true;
+  }catch(err){
+    console.error(err);
+    showToast(friendlyAuthError(err));
+    return false;
+  }
+}
 
 /* ============ PERFIL ============ */
 const swatchRow = document.getElementById('swatchRow');
@@ -1071,14 +857,14 @@ profileContinueBtn.addEventListener('click', async ()=>{
     const userRef = ref(db, 'users/'+currentUser.uid);
     await set(userRef, {
       uid: currentUser.uid,
-      phone: currentUser.phoneNumber || '',
+      email: currentUser.email || '',
       name: name,
       avatarColor: pendingAvatarColor,
       online: true,
       createdAt: serverTimestamp(),
       lastSeen: serverTimestamp()
     });
-    currentUserData = { name, avatarColor: pendingAvatarColor, phone: currentUser.phoneNumber||'' };
+    currentUserData = { name, avatarColor: pendingAvatarColor, email: currentUser.email||'' };
     setupPresence(currentUser.uid);
     enterApp();
   }catch(err){
@@ -1146,7 +932,7 @@ function renderContacts(data){
   const entries = Object.entries(data).filter(([uid])=> uid !== currentUser.uid);
   const f = contactSearchTerm.trim().toLowerCase();
   const filtered = entries.filter(([uid,u])=>
-    (u.name||'').toLowerCase().includes(f) || (u.phone||'').includes(f)
+    (u.name||'').toLowerCase().includes(f) || (u.email||'').toLowerCase().includes(f)
   );
 
   if(filtered.length===0){
@@ -1320,17 +1106,18 @@ document.getElementById('logoutBtn').addEventListener('click', async ()=>{
   }catch(err){ console.error(err); }
   currentUser=null; currentUserData=null; activeChatUid=null; activeChatId=null;
   document.getElementById('screen-chat').classList.remove('chat-open');
-  showScreen('country');
+  showScreen('email');
 });
 
 /* ============ ARRANQUE ============ */
 onAuthStateChanged(auth, user=>{
   setTimeout(async ()=>{
+    if(await handleEmailLinkIfPresent()) return;
     if(user){
       currentUser = user;
       await routeAfterAuth();
     }else{
-      showScreen('country');
+      showScreen('email');
     }
   }, 700);
 });
