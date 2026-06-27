@@ -619,7 +619,7 @@
 <div id="app">
 
   <!-- ============ SPLASH ============ -->
-  <div class="screen active" id="screen-splash">
+  <div class="screen" id="screen-splash">
     <div class="splash-logo-wrap">
       <div class="pulse-ring"></div>
       <div class="pulse-ring d2"></div>
@@ -631,7 +631,7 @@
   </div>
 
   <!-- ============ CORREO REAL (verificación) ============ -->
-  <div class="screen" id="screen-email">
+  <div class="screen active" id="screen-email">
     <div class="auth-wrap">
       <div class="topbar"></div>
       <div class="auth-card">
@@ -915,6 +915,14 @@ const auth  = getAuth(fbApp);
 const db    = getDatabase(fbApp);
 
 /* ══════════════════════════════════════════════
+   CONSTANTES
+══════════════════════════════════════════════ */
+const AVATAR_COLORS = [
+  '#CC785C','#5B8A72','#B8893F','#9C5B6E',
+  '#6B7A8F','#7C6A9C','#3F7A6E','#8A6A4A'
+];
+
+/* ══════════════════════════════════════════════
    ESTADO
 ══════════════════════════════════════════════ */
 let currentUser       = null;
@@ -926,11 +934,6 @@ let resendInterval    = null;
 let activeFolder      = 'inbox';
 let activeMailId      = null;
 let mailListener      = null;
-
-const AVATAR_COLORS = [
-  '#CC785C','#5B8A72','#B8893F','#9C5B6E',
-  '#6B7A8F','#7C6A9C','#3F7A6E','#8A6A4A'
-];
 
 const SCREEN_ORDER = ['splash','email','otp','profile','mail'];
 
@@ -1546,40 +1549,32 @@ document.getElementById('logoutBtn').addEventListener('click', async ()=>{
 });
 
 /* ══════════════════════════════════════════════
-   ARRANQUE
+   ARRANQUE — la pantalla de email ya está activa
+   Solo verificamos si hay sesión guardada para
+   ir directo al buzón sin pedir login de nuevo
 ══════════════════════════════════════════════ */
-let authResolved = false;
-const rescueTimer = setTimeout(()=>{
-  if(!authResolved){
-    authResolved=true;
-    showScreen('email');
-  }
-}, 5000);
-
-onAuthStateChanged(auth, async user=>{
-  if(authResolved) return;
-  authResolved=true;
-  clearTimeout(rescueTimer);
-  await new Promise(r=>setTimeout(r,700));
-
-  if(user){
-    currentUser=user;
-    try{
-      const snap = await get(ref(db,'baro_users/'+user.uid));
-      if(snap.exists()){
-        currentUserData=snap.val();
-        enterApp();
-      } else {
-        showScreen('email');
+try{
+  onAuthStateChanged(auth, async user=>{
+    if(user){
+      currentUser = user;
+      try{
+        const snap = await get(ref(db,'baro_users/'+user.uid));
+        if(snap.exists()){
+          currentUserData = snap.val();
+          enterApp();
+        }
+        // Si no tiene perfil, ya está en la pantalla de email
+      }catch(err){
+        console.error('DB error:',err);
+        // Ya estamos en email screen, no hacer nada
       }
-    }catch(err){
-      console.error(err);
-      showScreen('email');
     }
-  } else {
-    showScreen('email');
-  }
-});
+    // Sin usuario: ya estamos en la pantalla de email, perfecto
+  });
+}catch(err){
+  console.error('Firebase error:',err);
+  // Ya estamos en email screen, no hacer nada
+}
 </script>
 
 </body>
