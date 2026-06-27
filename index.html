@@ -3,51 +3,51 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-<title>Nexa · Mensajería en tiempo real</title>
+<title>Message by Drex · Mensajería en tiempo real</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#ffffff;
-    --bg-soft:#f6f7fb;
-    --bg-sidebar:#fbfbfd;
+    --bg-soft:#f7f5f2;
+    --bg-sidebar:#faf8f5;
     --bg-elevated:#ffffff;
-    --border:#e8eaf0;
-    --text:#181a24;
-    --text-soft:#6b7186;
-    --text-faint:#a3a8b8;
-    --accent:#4d6bfe;
-    --accent-soft:#edf0ff;
-    --accent-dark:#3950d6;
-    --bubble-out:#4d6bfe;
+    --border:#e8e3da;
+    --text:#1f1b16;
+    --text-soft:#71665a;
+    --text-faint:#b0a698;
+    --accent:#c15f3c;
+    --accent-soft:#f3e6de;
+    --accent-dark:#a14c2e;
+    --bubble-out:#c15f3c;
     --bubble-out-text:#ffffff;
-    --bubble-in:#f0f1f6;
-    --bubble-in-text:#181a24;
-    --success:#22c08a;
-    --danger:#ff4d5e;
-    --radius-s:10px;
-    --radius-m:16px;
-    --radius-l:26px;
-    --shadow-s:0 2px 10px rgba(24,26,36,.06);
-    --shadow-m:0 16px 40px rgba(24,26,36,.12);
-    --font-display:'Sora',sans-serif;
+    --bubble-in:#f0ece5;
+    --bubble-in-text:#1f1b16;
+    --success:#5b8a72;
+    --danger:#c0463c;
+    --radius-s:8px;
+    --radius-m:12px;
+    --radius-l:20px;
+    --shadow-s:0 2px 10px rgba(31,27,22,.06);
+    --shadow-m:0 16px 40px rgba(31,27,22,.12);
+    --font-display:'Source Serif 4',serif;
     --font-body:'Inter',sans-serif;
   }
   [data-theme="dark"]{
-    --bg:#0f1117;
-    --bg-soft:#151821;
-    --bg-sidebar:#12141b;
-    --bg-elevated:#1a1d27;
-    --border:#262a37;
-    --text:#eceef4;
-    --text-soft:#9aa0b5;
-    --text-faint:#666c80;
-    --accent:#5d7bff;
-    --accent-soft:#1d2440;
-    --accent-dark:#7891ff;
-    --bubble-in:#1f232f;
-    --bubble-in-text:#eceef4;
+    --bg:#1a1715;
+    --bg-soft:#211d1a;
+    --bg-sidebar:#1d1a17;
+    --bg-elevated:#252220;
+    --border:#3a3531;
+    --text:#f2eee8;
+    --text-soft:#b3a89c;
+    --text-faint:#766b5f;
+    --accent:#e07a52;
+    --accent-soft:#3a2a22;
+    --accent-dark:#ec8e69;
+    --bubble-in:#2c2825;
+    --bubble-in-text:#f2eee8;
     --shadow-s:0 2px 12px rgba(0,0,0,.4);
     --shadow-m:0 18px 44px rgba(0,0,0,.5);
   }
@@ -173,19 +173,28 @@
   .pulse-ring.d3{animation-delay:1.4s;}
   .logo-mark{
     width:96px;height:96px;
-    border-radius:28px;
-    background:linear-gradient(135deg,var(--accent),#8aa0ff);
+    border-radius:22px;
+    background:var(--accent);
     display:flex;align-items:center;justify-content:center;
     box-shadow:var(--shadow-m);
     animation:logoFloat 3s ease-in-out infinite;
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:42px;
+    color:#fff;
   }
-  .logo-mark svg{width:46px;height:46px;}
   .splash-name{
     font-family:var(--font-display);
     font-size:26px;
-    font-weight:700;
+    font-weight:600;
     letter-spacing:-.01em;
     margin-bottom:6px;
+  }
+  .splash-name .by{
+    font-family:var(--font-body);
+    font-weight:500;
+    font-size:16px;
+    color:var(--text-soft);
   }
   .splash-tag{
     font-size:14px;
@@ -300,7 +309,7 @@
     margin-top:24px;
     display:flex;align-items:center;justify-content:center;gap:8px;
     transition:background .2s, transform .15s, box-shadow .2s;
-    box-shadow:0 8px 20px rgba(77,107,254,.28);
+    box-shadow:0 8px 20px rgba(193,95,60,.28);
   }
   .btn-primary:hover{background:var(--accent-dark);}
   .btn-primary:active{transform:scale(.98);}
@@ -402,12 +411,14 @@
   }
   .brand-mini{display:flex;align-items:center;gap:10px;flex:1;}
   .brand-mark{
-    width:36px;height:36px;border-radius:11px;
-    background:linear-gradient(135deg,var(--accent),#8aa0ff);
+    width:34px;height:34px;border-radius:9px;
+    background:var(--accent);
     display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:600;font-size:16px;color:#fff;
+    flex-shrink:0;
   }
-  .brand-mark svg{width:18px;height:18px;}
-  .brand-text{font-family:var(--font-display);font-weight:700;font-size:17px;}
+  .brand-text{font-family:var(--font-display);font-weight:600;font-size:15.5px;}
+  .brand-text .by{font-family:var(--font-body);font-weight:500;font-size:12px;color:var(--text-soft);}
   .conn-status{
     display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-faint);font-weight:500;
   }
@@ -564,11 +575,9 @@
     <div class="splash-logo-wrap">
       <div class="pulse-ring"></div>
       <div class="pulse-ring d2"></div>
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v12H9l-5 4V4z" fill="white" fill-opacity=".95"/></svg>
-      </div>
+      <div class="logo-mark">M</div>
     </div>
-    <div class="splash-name">Nexa</div>
+    <div class="splash-name">Message <span class="by">by Drex</span></div>
     <div class="splash-tag">Conectando en tiempo real <span class="dot-flow"><span>.</span><span>.</span><span>.</span></span></div>
   </div>
 
@@ -581,7 +590,7 @@
         <h1 class="title">Selecciona tu país</h1>
         <p class="subtitle">Usaremos esto para darte el formato correcto de tu número de teléfono.</p>
         <div class="search-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
           <input id="countrySearch" type="text" placeholder="Buscar país o código..." autocomplete="off" />
         </div>
         <div class="country-list" id="countryList"></div>
@@ -593,7 +602,7 @@
   <div class="screen" id="screen-phone">
     <div class="topbar">
       <button class="icon-btn" id="backToCountry" aria-label="Volver">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
     </div>
     <div class="auth-wrap">
@@ -605,7 +614,7 @@
         <button class="country-chip" id="countryChip">
           <span class="country-flag" id="chipFlag">🌎</span>
           <span class="ccname" id="chipName">Elige un país</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </button>
 
         <div class="phone-input-row">
@@ -626,7 +635,7 @@
   <div class="screen" id="screen-otp">
     <div class="topbar">
       <button class="icon-btn" id="backToPhone" aria-label="Volver">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
     </div>
     <div class="auth-wrap">
@@ -689,24 +698,22 @@
       <aside class="chat-sidebar">
         <div class="sidebar-header">
           <div class="brand-mini">
-            <div class="brand-mark">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v12H9l-5 4V4z" fill="white"/></svg>
-            </div>
+            <div class="brand-mark">M</div>
             <div>
-              <div class="brand-text">Nexa</div>
+              <div class="brand-text">Message <span class="by">by Drex</span></div>
               <div class="conn-status"><span class="conn-dot" id="connDot"></span><span id="connText">En tiempo real</span></div>
             </div>
           </div>
           <button class="icon-btn" id="themeToggle" aria-label="Cambiar tema">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
           </button>
           <div style="position:relative">
             <button class="icon-btn" id="menuToggle" aria-label="Menú">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="6" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="18" r="1.2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="18" r="1.2"/></svg>
             </button>
             <div class="menu-pop" id="menuPop">
               <button class="menu-item" id="logoutBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
                 Cerrar sesión
               </button>
             </div>
@@ -715,7 +722,7 @@
 
         <div class="sidebar-search">
           <div class="search-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
             <input id="contactSearch" type="text" placeholder="Buscar conversación..." autocomplete="off" />
           </div>
         </div>
@@ -727,14 +734,14 @@
 
       <main class="chat-main" id="chatMain">
         <div class="chat-main-empty" id="chatEmptyState">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
           <p>Selecciona una conversación de la izquierda para empezar a chatear en tiempo real.</p>
         </div>
 
         <div id="chatActive" style="display:none;flex-direction:column;flex:1;min-height:0;">
           <div class="chat-header">
             <button class="icon-btn back-mobile" id="backToList" aria-label="Volver">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
             <div class="avatar-sm" id="headerAvatar">?</div>
             <div style="flex:1;min-width:0;">
@@ -748,7 +755,7 @@
           <div class="composer">
             <textarea id="msgInput" rows="1" placeholder="Escribe un mensaje..."></textarea>
             <button class="send-btn" id="sendMsgBtn" aria-label="Enviar">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l18-8-8 18-2.5-7.5L3 11z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </button>
           </div>
         </div>
@@ -828,7 +835,7 @@ function flagEmoji(iso){
   return iso.toUpperCase().replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt(0)));
 }
 
-const AVATAR_COLORS = ['#4d6bfe','#22c08a','#ff8a4d','#ff4d8a','#9a5dff','#23b6c7','#f2b400','#5d7bff'];
+const AVATAR_COLORS = ['#c15f3c','#5b8a72','#b8893f','#9c5b6e','#6b7a8f','#7c6a9c','#3f7a6e','#8a6a4a'];
 
 /* ============ ESTADO ============ */
 let selectedCountry = null;
@@ -881,10 +888,16 @@ function friendlyAuthError(err){
     'auth/too-many-requests':'Demasiados intentos. Espera un momento antes de volver a intentar.',
     'auth/quota-exceeded':'Se alcanzó el límite de SMS del proyecto por ahora.',
     'auth/invalid-verification-code':'El código no es correcto. Verifica los 6 dígitos.',
+    'auth/invalid-app-credential':'Falta configurar reCAPTCHA/App Check para este dominio en Firebase.',
+    'auth/billing-not-enabled':'La verificación por SMS requiere el plan de pago (Blaze) en Firebase.',
+    'auth/unauthorized-domain':'Este dominio no está autorizado en Firebase Authentication.',
+    'auth/captcha-check-failed':'Falló la verificación de reCAPTCHA. Revisa la configuración del dominio.',
+    'auth/missing-app-credential':'Falta configurar reCAPTCHA/App Check para este dominio en Firebase.',
     'auth/code-expired':'El código ya venció. Solicita uno nuevo.',
     'auth/network-request-failed':'Sin conexión. Revisa tu internet e intenta otra vez.'
   };
-  return map[code] || 'Ocurrió un problema. Intenta de nuevo en un momento.';
+  const base = map[code] || 'Ocurrió un problema al enviar el código.';
+  return code ? `${base} (código: ${code})` : base;
 }
 
 /* ============ PAÍSES ============ */
@@ -1137,7 +1150,7 @@ function renderContacts(data){
   );
 
   if(filtered.length===0){
-    listEl.innerHTML = '<div class="empty-contacts">Aún no hay otras personas registradas.<br>Comparte Nexa para empezar a chatear.</div>';
+    listEl.innerHTML = '<div class="empty-contacts">Aún no hay otras personas registradas.<br>Comparte Message para empezar a chatear.</div>';
     return;
   }
 
@@ -1150,7 +1163,7 @@ function renderContacts(data){
       item.style.animationDelay = (Math.min(i,10)*0.02)+'s';
       const statusText = u.online ? 'En línea' : lastSeenText(u.lastSeen);
       item.innerHTML = `
-        <div class="avatar-sm" style="background:${u.avatarColor||'#4d6bfe'}">
+        <div class="avatar-sm" style="background:${u.avatarColor||'#c15f3c'}">
           ${initials(u.name||'?')}
           <span class="status-dot ${u.online?'online':''}"></span>
         </div>
@@ -1200,7 +1213,7 @@ function openChat(otherUid, otherData){
 
   document.getElementById('chatEmptyState').style.display='none';
   document.getElementById('chatActive').style.display='flex';
-  document.getElementById('headerAvatar').style.background = otherData.avatarColor || '#4d6bfe';
+  document.getElementById('headerAvatar').style.background = otherData.avatarColor || '#c15f3c';
   document.getElementById('headerAvatar').textContent = initials(otherData.name||'?');
   document.getElementById('headerName').textContent = otherData.name || 'Usuario';
   setHeaderStatus(otherData.online ? 'En línea' : lastSeenText(otherData.lastSeen), false);
